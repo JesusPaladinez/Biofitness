@@ -105,7 +105,67 @@ const Home = () => {
             nombre: 'Isabel Mora',
             identificacion: '741852963',
             inicio: '2025-05-20', // Vigente
-        }
+        },
+        {
+            id: 11,
+            nombre: 'Valentina Castro',
+            identificacion: '159753486',
+            inicio: '2025-03-28', // Vencido
+        },
+        {
+            id: 12,
+            nombre: 'Emilio Herrera',
+            identificacion: '357951486',
+            inicio: '2025-04-18', // Vigente
+        },
+        {
+            id: 13,
+            nombre: 'Camila Ríos',
+            identificacion: '258369147',
+            inicio: '2025-04-10', // Vigente
+        },
+        {
+            id: 14,
+            nombre: 'Javier Mendoza',
+            identificacion: '951753852',
+            inicio: '2025-03-30', // Vencido
+        },
+        {
+            id: 15,
+            nombre: 'Lucía Vargas',
+            identificacion: '753159486',
+            inicio: '2025-04-22', // Vigente
+        },
+        {
+            id: 16,
+            nombre: 'Andrés Salazar',
+            identificacion: '654321987',
+            inicio: '2025-04-03', // Por vencer
+        },
+        {
+            id: 17,
+            nombre: 'Paula Jiménez',
+            identificacion: '369258147',
+            inicio: '2025-04-12', // Vigente
+        },
+        {
+            id: 18,
+            nombre: 'Esteban Pardo',
+            identificacion: '147369258',
+            inicio: '2025-04-06', // Vencido
+        },
+        {
+            id: 19,
+            nombre: 'Gabriela Silva',
+            identificacion: '258147369',
+            inicio: '2025-05-10', // Vigente
+        },
+        {
+            id: 20,
+            nombre: 'Tomás Ortega',
+            identificacion: '963741258',
+            inicio: '2025-04-15', // Vigente
+        },
     ];
 
     // Procesar los datos
