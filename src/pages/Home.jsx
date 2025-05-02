@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import Table from '../components/Table';
+import { GoArrowRight } from "react-icons/go";
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [estadoFilter, setEstadoFilter] = useState('todos');
+    const navigate = useNavigate();
 
     // Función para formatear la fecha al formato dd/mm/yyyy
     const formatearFecha = (fecha) => {
@@ -36,6 +39,10 @@ const Home = () => {
             return { estado: 'Vigente', diasMora: "" };
         }
     };
+
+    // Función para eliminar tildes/acentos de un string
+    const quitarTildes = (texto) =>
+        texto.normalize('NFD').replace(/\p{Diacritic}/gu, '');
 
     // Datos de ejemplo
     const datos = [
@@ -117,7 +124,9 @@ const Home = () => {
 
     // Filtrar datos según el término de búsqueda y el estado
     const datosFiltrados = datosProcesados.filter(item => {
-        const matchesSearch = item.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        const nombreSinTildes = quitarTildes(item.nombre.toLowerCase());
+        const searchSinTildes = quitarTildes(searchTerm.toLowerCase());
+        const matchesSearch = nombreSinTildes.includes(searchSinTildes) ||
             item.identificacion.includes(searchTerm);
         const matchesEstado = estadoFilter === 'todos' || item.estado === estadoFilter;
         return matchesSearch && matchesEstado;
@@ -135,8 +144,14 @@ const Home = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <button className="bg-yellow-400 hover:bg-black text-black hover:text-white font-bold py-2 px-4 rounded-lg transition-colors">
-                        Inscribir
+                    <button
+                        className="group bg-yellow-400 hover:bg-black text-black hover:text-white font-bold py-2 px-4 rounded-lg transition-colors cursor-pointer"
+                        onClick={() => navigate('/registration')}
+                    >
+                        <span className="flex items-center gap-2">
+                            Inscribir
+                            <GoArrowRight className="hidden group-hover:inline text-2xl" />
+                        </span>
                     </button>
                 </div>
             </div>

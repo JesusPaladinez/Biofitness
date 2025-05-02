@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaCaretDown } from "react-icons/fa6";
 
 const Table = ({ data, onEstadoFilterChange }) => {
     return (
@@ -12,16 +13,17 @@ const Table = ({ data, onEstadoFilterChange }) => {
                         <th className="px-6 py-3 border-b-2 border-gray-300 text-left">Inicio</th>
                         <th className="px-6 py-3 border-b-2 border-gray-300 text-left">Fin</th>
                         <th className="px-6 py-3 border-b-2 border-gray-300 text-left">
-                            <div className="flex flex-col gap-2">
+                            <div className="relative w-full">
                                 <select
                                     onChange={(e) => onEstadoFilterChange(e.target.value)}
-                                    className="w-full px-2 py-1 text-sm rounded-md hover:bg-gray-200"
+                                    className="w-full px-2 py-1 pr-8 text-sm rounded-md hover:bg-gray-200 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-300"
                                 >
                                     <option value="todos">Estado</option>
                                     <option value="Vigente">Vigente</option>
                                     <option value="Por vencer">Por vencer</option>
                                     <option value="Vencido">Vencido</option>
                                 </select>
+                                <FaCaretDown className="absolute right-16 top-1/2 -translate-y-1/2 text-black text-xs pointer-events-none" />
                             </div>
                         </th>
                         <th className="px-6 py-3 border-b-2 border-gray-300 text-left">Días de mora</th>
