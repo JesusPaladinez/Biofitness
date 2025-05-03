@@ -121,62 +121,62 @@ const Home = () => {
         { id: 72, nombre: 'Víctor Paredes', identificacion: '852963741', inicio: '2025-07-05' }, // Vigente
         { id: 73, nombre: 'Aurora Mendoza', identificacion: '741963852', inicio: '2025-04-06' }, // Por vencer
         { id: 74, nombre: 'Héctor Castro', identificacion: '963852741', inicio: '2025-03-07' }, // Vencido
-        { id: 75, nombre: 'Mercedes Ríos', identificacion: '852741963', inicio: '2025-05-17' }, // Vigente
-        { id: 76, nombre: 'Félix Torres', identificacion: '741852963', inicio: '2025-04-07' }, // Por vencer
-        { id: 77, nombre: 'Dolores Herrera', identificacion: '963741852', inicio: '2025-03-19' }, // Vencido
-        { id: 78, nombre: 'Emilio Silva', identificacion: '852963741', inicio: '2025-07-11' }, // Vigente
-        { id: 79, nombre: 'Rosario Vargas', identificacion: '741963852', inicio: '2025-04-08' }, // Por vencer
-        { id: 80, nombre: 'Manuel Ortiz', identificacion: '963852741', inicio: '2025-03-13' }, // Vencido
-        { id: 81, nombre: 'Julia Pardo', identificacion: '852741963', inicio: '2025-05-23' }, // Vigente
-        { id: 82, nombre: 'Alfonso Rojas', identificacion: '741852963', inicio: '2025-04-09' }, // Por vencer
-        { id: 83, nombre: 'Marina Soto', identificacion: '963741852', inicio: '2025-03-24' }, // Vencido
-        { id: 84, nombre: 'Ricardo Vega', identificacion: '852963741', inicio: '2025-07-17' }, // Vigente
-        { id: 85, nombre: 'Natalia Flores', identificacion: '741963852', inicio: '2025-04-04' }, // Por vencer
-        { id: 86, nombre: 'Guillermo Mora', identificacion: '963852741', inicio: '2025-03-19' }, // Vencido
-        { id: 87, nombre: 'Cristina Paredes', identificacion: '852741963', inicio: '2025-05-27' }, // Vigente
-        { id: 88, nombre: 'Adrián Mendoza', identificacion: '741852963', inicio: '2025-04-05' }, // Por vencer
-        { id: 89, nombre: 'Beatriz Castro', identificacion: '963741852', inicio: '2025-03-29' }, // Vencido
-        { id: 90, nombre: 'Jorge Ríos', identificacion: '852963741', inicio: '2025-07-23' }, // Vigente
-        { id: 91, nombre: 'Sara Torres', identificacion: '741963852', inicio: '2025-04-06' }, // Por vencer
-        { id: 92, nombre: 'Pablo Herrera', identificacion: '963852741', inicio: '2025-03-25' }, // Vencido
-        { id: 93, nombre: 'Elena Silva', identificacion: '852741963', inicio: '2025-06-02' }, // Vigente
-        { id: 94, nombre: 'David Vargas', identificacion: '741852963', inicio: '2025-04-07' }, // Por vencer
-        { id: 95, nombre: 'Laura Ortiz', identificacion: '963741852', inicio: '2025-03-04' }, // Vencido
-        { id: 96, nombre: 'Ángel Pardo', identificacion: '852963741', inicio: '2025-07-29' }, // Vigente
-        { id: 97, nombre: 'Mónica Rojas', identificacion: '741963852', inicio: '2025-04-08' }, // Por vencer
-        { id: 98, nombre: 'José Soto', identificacion: '963852741', inicio: '2025-03-31' }, // Vencido
-        { id: 99, nombre: 'Ana Vega', identificacion: '852741963', inicio: '2025-06-08' }, // Vigente
-        { id: 100, nombre: 'Carlos Flores', identificacion: '741852963', inicio: '2025-04-09' }, // Por vencer
-        { id: 101, nombre: 'Rafael Mora', identificacion: '963852741', inicio: '2025-03-10' }, // Vencido
-        { id: 102, nombre: 'Isabel Paredes', identificacion: '852741963', inicio: '2025-08-04' }, // Vigente
-        { id: 103, nombre: 'Luis Mendoza', identificacion: '741963852', inicio: '2025-04-04' }, // Por vencer
-        { id: 104, nombre: 'Patricia Castro', identificacion: '963852741', inicio: '2025-03-06' }, // Vencido
-        { id: 105, nombre: 'Roberto Ríos', identificacion: '852741963', inicio: '2025-06-14' }, // Vigente
-        { id: 106, nombre: 'Carmen Torres', identificacion: '741852963', inicio: '2025-04-05' }, // Por vencer
-        { id: 107, nombre: 'Javier Herrera', identificacion: '963741852', inicio: '2025-03-16' }, // Vencido
-        { id: 108, nombre: 'María Silva', identificacion: '852963741', inicio: '2025-08-10' }, // Vigente
-        { id: 109, nombre: 'Antonio Vargas', identificacion: '741963852', inicio: '2025-04-06' }, // Por vencer
-        { id: 110, nombre: 'Elena Ortiz', identificacion: '963852741', inicio: '2025-03-12' }, // Vencido
-        { id: 111, nombre: 'Francisco Pardo', identificacion: '852741963', inicio: '2025-06-20' }, // Vigente
-        { id: 112, nombre: 'Lucía Rojas', identificacion: '741852963', inicio: '2025-04-07' }, // Por vencer
-        { id: 113, nombre: 'Miguel Soto', identificacion: '963741852', inicio: '2025-03-22' }, // Vencido
-        { id: 114, nombre: 'Sofía Vega', identificacion: '852963741', inicio: '2025-08-16' }, // Vigente
-        { id: 115, nombre: 'Juan Flores', identificacion: '741963852', inicio: '2025-04-08' }, // Por vencer
-        { id: 116, nombre: 'Ana Mora', identificacion: '963852741', inicio: '2025-03-18' }, // Vencido
-        { id: 117, nombre: 'Pedro Paredes', identificacion: '852741963', inicio: '2025-06-26' }, // Vigente
-        { id: 118, nombre: 'Laura Mendoza', identificacion: '741852963', inicio: '2025-04-09' }, // Por vencer
-        { id: 119, nombre: 'Carlos Castro', identificacion: '963741852', inicio: '2025-03-28' }, // Vencido
-        { id: 120, nombre: 'María Ríos', identificacion: '852963741', inicio: '2025-08-22' }, // Vigente
-        { id: 121, nombre: 'José Torres', identificacion: '741963852', inicio: '2025-04-04' }, // Por vencer
-        { id: 122, nombre: 'Isabel Herrera', identificacion: '963852741', inicio: '2025-03-24' }, // Vencido
-        { id: 123, nombre: 'Francisco Silva', identificacion: '852741963', inicio: '2025-07-02' }, // Vigente
-        { id: 124, nombre: 'Lucía Vargas', identificacion: '741852963', inicio: '2025-04-05' }, // Por vencer
-        { id: 125, nombre: 'Miguel Ortiz', identificacion: '963741852', inicio: '2025-03-04' }, // Vencido
-        { id: 126, nombre: 'Sofía Pardo', identificacion: '852963741', inicio: '2025-08-28' }, // Vigente
-        { id: 127, nombre: 'Juan Rojas', identificacion: '741963852', inicio: '2025-04-06' }, // Por vencer
-        { id: 128, nombre: 'Ana Soto', identificacion: '963852741', inicio: '2025-03-30' }, // Vencido (Modificado antes)
-        { id: 129, nombre: 'Pedro Vega', identificacion: '852741963', inicio: '2025-04-08' }, // Por vencer (Modificado antes)
-        { id: 130, nombre: 'Laura Flores', identificacion: '741852963', inicio: '2025-09-01' }  // Vigente (Modificado antes)
+        // { id: 75, nombre: 'Mercedes Ríos', identificacion: '852741963', inicio: '2025-05-17' }, // Vigente
+        // { id: 76, nombre: 'Félix Torres', identificacion: '741852963', inicio: '2025-04-07' }, // Por vencer
+        // { id: 77, nombre: 'Dolores Herrera', identificacion: '963741852', inicio: '2025-03-19' }, // Vencido
+        // { id: 78, nombre: 'Emilio Silva', identificacion: '852963741', inicio: '2025-07-11' }, // Vigente
+        // { id: 79, nombre: 'Rosario Vargas', identificacion: '741963852', inicio: '2025-04-08' }, // Por vencer
+        // { id: 80, nombre: 'Manuel Ortiz', identificacion: '963852741', inicio: '2025-03-13' }, // Vencido
+        // { id: 81, nombre: 'Julia Pardo', identificacion: '852741963', inicio: '2025-05-23' }, // Vigente
+        // { id: 82, nombre: 'Alfonso Rojas', identificacion: '741852963', inicio: '2025-04-09' }, // Por vencer
+        // { id: 83, nombre: 'Marina Soto', identificacion: '963741852', inicio: '2025-03-24' }, // Vencido
+        // { id: 84, nombre: 'Ricardo Vega', identificacion: '852963741', inicio: '2025-07-17' }, // Vigente
+        // { id: 85, nombre: 'Natalia Flores', identificacion: '741963852', inicio: '2025-04-04' }, // Por vencer
+        // { id: 86, nombre: 'Guillermo Mora', identificacion: '963852741', inicio: '2025-03-19' }, // Vencido
+        // { id: 87, nombre: 'Cristina Paredes', identificacion: '852741963', inicio: '2025-05-27' }, // Vigente
+        // { id: 88, nombre: 'Adrián Mendoza', identificacion: '741852963', inicio: '2025-04-05' }, // Por vencer
+        // { id: 89, nombre: 'Beatriz Castro', identificacion: '963741852', inicio: '2025-03-29' }, // Vencido
+        // { id: 90, nombre: 'Jorge Ríos', identificacion: '852963741', inicio: '2025-07-23' }, // Vigente
+        // { id: 91, nombre: 'Sara Torres', identificacion: '741963852', inicio: '2025-04-06' }, // Por vencer
+        // { id: 92, nombre: 'Pablo Herrera', identificacion: '963852741', inicio: '2025-03-25' }, // Vencido
+        // { id: 93, nombre: 'Elena Silva', identificacion: '852741963', inicio: '2025-06-02' }, // Vigente
+        // { id: 94, nombre: 'David Vargas', identificacion: '741852963', inicio: '2025-04-07' }, // Por vencer
+        // { id: 95, nombre: 'Laura Ortiz', identificacion: '963741852', inicio: '2025-03-04' }, // Vencido
+        // { id: 96, nombre: 'Ángel Pardo', identificacion: '852963741', inicio: '2025-07-29' }, // Vigente
+        // { id: 97, nombre: 'Mónica Rojas', identificacion: '741963852', inicio: '2025-04-08' }, // Por vencer
+        // { id: 98, nombre: 'José Soto', identificacion: '963852741', inicio: '2025-03-31' }, // Vencido
+        // { id: 99, nombre: 'Ana Vega', identificacion: '852741963', inicio: '2025-06-08' }, // Vigente
+        // { id: 100, nombre: 'Carlos Flores', identificacion: '741852963', inicio: '2025-04-09' }, // Por vencer
+        // { id: 101, nombre: 'Rafael Mora', identificacion: '963852741', inicio: '2025-03-10' }, // Vencido
+        // { id: 102, nombre: 'Isabel Paredes', identificacion: '852741963', inicio: '2025-08-04' }, // Vigente
+        // { id: 103, nombre: 'Luis Mendoza', identificacion: '741963852', inicio: '2025-04-04' }, // Por vencer
+        // { id: 104, nombre: 'Patricia Castro', identificacion: '963852741', inicio: '2025-03-06' }, // Vencido
+        // { id: 105, nombre: 'Roberto Ríos', identificacion: '852741963', inicio: '2025-06-14' }, // Vigente
+        // { id: 106, nombre: 'Carmen Torres', identificacion: '741852963', inicio: '2025-04-05' }, // Por vencer
+        // { id: 107, nombre: 'Javier Herrera', identificacion: '963741852', inicio: '2025-03-16' }, // Vencido
+        // { id: 108, nombre: 'María Silva', identificacion: '852963741', inicio: '2025-08-10' }, // Vigente
+        // { id: 109, nombre: 'Antonio Vargas', identificacion: '741963852', inicio: '2025-04-06' }, // Por vencer
+        // { id: 110, nombre: 'Elena Ortiz', identificacion: '963852741', inicio: '2025-03-12' }, // Vencido
+        // { id: 111, nombre: 'Francisco Pardo', identificacion: '852741963', inicio: '2025-06-20' }, // Vigente
+        // { id: 112, nombre: 'Lucía Rojas', identificacion: '741852963', inicio: '2025-04-07' }, // Por vencer
+        // { id: 113, nombre: 'Miguel Soto', identificacion: '963741852', inicio: '2025-03-22' }, // Vencido
+        // { id: 114, nombre: 'Sofía Vega', identificacion: '852963741', inicio: '2025-08-16' }, // Vigente
+        // { id: 115, nombre: 'Juan Flores', identificacion: '741963852', inicio: '2025-04-08' }, // Por vencer
+        // { id: 116, nombre: 'Ana Mora', identificacion: '963852741', inicio: '2025-03-18' }, // Vencido
+        // { id: 117, nombre: 'Pedro Paredes', identificacion: '852741963', inicio: '2025-06-26' }, // Vigente
+        // { id: 118, nombre: 'Laura Mendoza', identificacion: '741852963', inicio: '2025-04-09' }, // Por vencer
+        // { id: 119, nombre: 'Carlos Castro', identificacion: '963741852', inicio: '2025-03-28' }, // Vencido
+        // { id: 120, nombre: 'María Ríos', identificacion: '852963741', inicio: '2025-08-22' }, // Vigente
+        // { id: 121, nombre: 'José Torres', identificacion: '741963852', inicio: '2025-04-04' }, // Por vencer
+        // { id: 122, nombre: 'Isabel Herrera', identificacion: '963852741', inicio: '2025-03-24' }, // Vencido
+        // { id: 123, nombre: 'Francisco Silva', identificacion: '852741963', inicio: '2025-07-02' }, // Vigente
+        // { id: 124, nombre: 'Lucía Vargas', identificacion: '741852963', inicio: '2025-04-05' }, // Por vencer
+        // { id: 125, nombre: 'Miguel Ortiz', identificacion: '963741852', inicio: '2025-03-04' }, // Vencido
+        // { id: 126, nombre: 'Sofía Pardo', identificacion: '852963741', inicio: '2025-08-28' }, // Vigente
+        // { id: 127, nombre: 'Juan Rojas', identificacion: '741963852', inicio: '2025-04-06' }, // Por vencer
+        // { id: 128, nombre: 'Ana Soto', identificacion: '963852741', inicio: '2025-03-30' }, // Vencido (Modificado antes)
+        // { id: 129, nombre: 'Pedro Vega', identificacion: '852741963', inicio: '2025-04-08' }, // Por vencer (Modificado antes)
+        // { id: 130, nombre: 'Laura Flores', identificacion: '741852963', inicio: '2025-09-01' }  // Vigente (Modificado antes)
     ];
 
     // Procesar los datos - ORDENADOS DE FORMA DESCENDENTE POR ID

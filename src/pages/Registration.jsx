@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function Registration() {
-    const navigate = useNavigate();
+export default function Registration() {    
+  const navigate = useNavigate();
 
   return (
     <div className='flex flex-col gap-y-6 items-center justify-center min-h-screen'>
