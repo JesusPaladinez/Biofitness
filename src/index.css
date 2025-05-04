@@ -1,2 +1,46 @@
 @import "tailwindcss";
 
+/* Para navegadores basados en Webkit (Chrome, Safari) */
+/* Estilo general de la barra de scroll */
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
+    width: 8px; /* Ancho de la barra de scroll vertical */
+    height: 8px; /* Altura de la barra de scroll horizontal */
+    background-color: transparent; /* Hace que el fondo de la barra sea transparente */
+}
+
+/* Estilo del "riel" o pista del scroll - Lo hacemos transparente */
+.overflow-y-auto::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Estilo del "pulgar" o controlador del scroll */
+.overflow-y-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb {
+    background: #ddd; /* Color del controlador (gris) */
+    border-radius: 10px; /* Bordes redondeados para el controlador */
+    /* border: 2px solid transparent; Esto es opcional, añade un borde transparente para hacer el pulgar un poco más delgado visualmente sin cambiar el ancho total del scrollbar */
+    /* background-clip: content-box; Usado con el borde transparente */
+}
+
+/* Estilo del controlador al pasar el mouse por encima */
+.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: #999; /* Color del controlador al pasar el mouse (gris más oscuro) */
+}
+
+/* Ocultar los botones de flecha (si los hay) */
+.overflow-y-auto::-webkit-scrollbar-button,
+.overflow-x-auto::-webkit-scrollbar-button {
+    display: none;
+}
+
+
+/* Para Firefox */
+/* Permite controlar el ancho (thin, auto, none) */
+.overflow-y-auto,
+.overflow-x-auto {
+    scrollbar-width: thin; /* Hace la barra delgada */
+    scrollbar-color: #ddd transparent; /* color del pulgar y luego color de la pista (transparente) */
+}

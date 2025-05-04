@@ -3,15 +3,15 @@ import { FaCaretDown } from "react-icons/fa6";
 
 const Table = ({ data, onEstadoFilterChange }) => {
     return (
-        <div className="overflow-x-auto border-1 border-gray-300 rounded-lg shadow-lg">
+        <div className="overflow-x-auto overflow-y-auto max-h-[500px] border-1 border-gray-300 rounded-lg shadow-lg">
             <table className="min-w-full bg-white">
-                <thead> 
-                    <tr className="bg-purple-100">
+                <thead className='sticky top-0 bg-purple-100 border-b-1 border-gray-300 z-10'> 
+                    <tr> 
                         <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">ID</th>
                         <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Nombre</th>
                         <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Identificación</th>
                         <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Teléfono</th>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Fecha Inscripción</th>
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Fecha inscripción</th>
                         <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Último pago</th>
                         <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Plan (Días)</th>
                         <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Vence</th>
@@ -29,7 +29,7 @@ const Table = ({ data, onEstadoFilterChange }) => {
                                 <FaCaretDown className="absolute right-2 top-1/2 -translate-y-1/2 text-black text-xs pointer-events-none" />
                             </div>
                         </th>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Días de mora</th>
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Días en mora</th>
                     </tr>
                 </thead>
                 <tbody>
