@@ -5,16 +5,18 @@ const Table = ({ data, onEstadoFilterChange }) => {
     return (
         <div className="overflow-x-auto overflow-y-auto max-h-[500px] border-1 border-gray-300 rounded-lg shadow-lg">
             <table className="min-w-full bg-white">
-                <thead className='sticky top-0 bg-purple-100 border-b-1 border-gray-300 z-10'> 
-                    <tr> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">ID</th>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Nombre</th>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Identificación</th>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Teléfono</th>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Fecha inscripción</th>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Último pago</th>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Plan (Días)</th>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Vence</th>
+                <thead className='sticky top-0 bg-purple-100 border-b-1 border-gray-300 z-10'>
+                    <tr>
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">ID</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Nombre</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Teléfono</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Fecha inscripción</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Último pago</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Método de pago</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Responsable</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">No. recibo</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Plan (Días)</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Vence</th> 
                         <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">
                             <div className="relative w-full">
                                 <select
@@ -35,14 +37,16 @@ const Table = ({ data, onEstadoFilterChange }) => {
                 <tbody>
                     {data.map((item) => (
                         <tr key={item.id} className="hover:bg-gray-50">
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.id}</td>
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.nombre}</td>
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.identificacion}</td>
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.telefono}</td>
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.fechaInscripcion}</td>
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.ultimoPago}</td>
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.planDias}</td>
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.vence}</td>
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.id}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.nombre}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.telefono}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.fechaInscripcion}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.ultimoPago}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.metodoPago}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.responsable}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.noRecibo}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.planDias}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.vence}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                                 <span className={`px-2 py-1 rounded ${item.estado === 'Vigente' ? 'bg-green-100 text-green-800' :
                                     item.estado === 'Por vencer' ? 'bg-yellow-100 text-yellow-800' :
