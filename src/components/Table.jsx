@@ -3,7 +3,7 @@ import { FaCaretDown } from "react-icons/fa6";
 
 const Table = ({ data, onEstadoFilterChange }) => {
     return (
-        <div className="overflow-x-auto overflow-y-auto max-h-[500px] border-1 border-gray-300 rounded-lg shadow-lg">
+        <div className="overflow-x-auto overflow-y-auto max-h-[500px] border-1 border-gray-300 rounded-lg">
             <table className="min-w-full bg-white">
                 <thead className='sticky top-0 bg-purple-100 border-b-1 border-gray-300 z-10'>
                     <tr>

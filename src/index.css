@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-color: #f9fafb;
+}
+
 /* Para navegadores basados en Webkit (Chrome, Safari) */
 /* Estilo general de la barra de scroll */
 .overflow-y-auto::-webkit-scrollbar,

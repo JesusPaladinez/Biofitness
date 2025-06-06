@@ -161,12 +161,12 @@ const Home = () => {
                     <input
                         type="text"
                         placeholder="Buscar por nombre o teléfono..."
-                        className="w-80 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300"
+                        className="w-80 px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <button
-                        className="group bg-purple-950 hover:bg-black text-white hover:text-white font-bold py-2 px-4 rounded-lg transition-colors cursor-pointer"
+                        className="group bg-purple-950 text-white hover:text-white font-bold py-2 px-4 rounded-lg transition-colors cursor-pointer"
                         onClick={() => navigate('/registration')}
                     >
                         <span className="flex items-center gap-2">
