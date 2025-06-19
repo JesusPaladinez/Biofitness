@@ -48,8 +48,8 @@ export default function Registration() {
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen p-4'>
-      <div className='bg-white p-8 rounded-xl border-1 border-gray-300 w-full max-w-md'>
-        <h2 className='text-2xl font-bold text-center mb-6 text-purple-950'>Inscripción</h2>
+      <div className='bg-white p-8 rounded-2xl border-1 border-gray-300 w-full max-w-md'>
+        <h2 className='text-2xl font-semibold text-center mb-6 text-black'>Inscripción</h2>
 
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div>
@@ -62,7 +62,7 @@ export default function Registration() {
               name='nombre'
               value={formData.nombre}
               onChange={handleChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
               required
             />
           </div>
@@ -77,7 +77,7 @@ export default function Registration() {
               name='telefono'
               value={formData.telefono}
               onChange={handleChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
               required
             />
           </div>
@@ -91,7 +91,7 @@ export default function Registration() {
               name='metodoPago'
               value={formData.metodoPago}
               onChange={handleChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
               required
             >
               <option value='' className='text-gray-500'>Seleccione el método de pago</option>
@@ -110,10 +110,10 @@ export default function Registration() {
               name='planDias'
               value={formData.planDias}
               onChange={handleChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
               required
             >
-              <option value='' className='text-gray-500'>Seleccione el plan</option>
+              <option value='' className='text-gray-500'>Seleccione el plan de días</option>
               <option value='1'>1 día</option>
               <option value='5'>5 días</option>
               <option value='15'>15 días</option>
@@ -132,7 +132,7 @@ export default function Registration() {
 
           <button
             type='submit'
-            className='w-full bg-purple-950 hover:bg-black text-white font-bold py-2 px-4 mt-3 rounded-md transition duration-300'
+            className='w-full bg-purple-800 hover:bg-black text-white font-semibold py-2 px-4 mt-3 rounded-lg transition duration-300'
           >
             Aceptar
           </button>

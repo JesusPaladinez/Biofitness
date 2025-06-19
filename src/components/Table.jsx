@@ -3,25 +3,25 @@ import { FaCaretDown } from "react-icons/fa6";
 
 const Table = ({ data, onEstadoFilterChange }) => {
     return (
-        <div className="overflow-x-auto overflow-y-auto max-h-[500px] border-1 border-gray-300 rounded-lg">
+        <div className="overflow-x-auto overflow-y-auto max-h-[500px] border-1 border-gray-300 rounded-2xl">
             <table className="min-w-full bg-white">
-                <thead className='sticky top-0 bg-purple-100 border-b-1 border-gray-300 z-10'>
+                <thead className='sticky top-0 border-b-1 border-gray-300 z-10'>
                     <tr>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">ID</th> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Nombre</th> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Teléfono</th> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Fecha inscripción</th> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Último pago</th> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Método de pago</th> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Responsable</th> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">No. recibo</th> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Plan (Días)</th> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Vence</th> 
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">No.</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">Nombre</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">Teléfono</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">Fecha inscripción</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">Último pago</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">Método de pago</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">Administrador</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">No. recibo</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">Plan</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">Vence</th> 
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">
                             <div className="relative w-full">
                                 <select
                                     onChange={(e) => onEstadoFilterChange(e.target.value)}
-                                    className="w-full px-2 py-1 pr-8 text-sm rounded-md hover:bg-purple-200 appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-purple-300"
+                                    className="w-full px-2 py-1 pr-8 text-sm rounded-md appearance-none cursor-pointer focus:outline-none focus:ring-1"
                                 >
                                     <option value="todos">Estado</option>
                                     <option value="Vigente">Vigente</option>
@@ -31,12 +31,12 @@ const Table = ({ data, onEstadoFilterChange }) => {
                                 <FaCaretDown className="absolute right-2 top-1/2 -translate-y-1/2 text-black text-xs pointer-events-none" />
                             </div>
                         </th>
-                        <th className="px-6 py-3 border-b-1 border-gray-300 text-left whitespace-nowrap">Días en mora</th>
+                        <th className="px-6 py-3 border-b-1 border-gray-300 font-semibold text-black text-left whitespace-nowrap">Días en mora</th>
                     </tr>
                 </thead>
                 <tbody>
                     {data.map((item) => (
-                        <tr key={item.id} className="hover:bg-gray-50">
+                        <tr key={item.id} className="hover:bg-purple-50">
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.id}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.nombre}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.telefono}</td> 

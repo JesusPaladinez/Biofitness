@@ -1,0 +1,58 @@
+import api from "./api";
+
+export const managerService = {
+  getAll: async () => {
+    try {
+      const response = await api.get("/managers");
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getById: async (id) => {
+    try {
+      const response = await api.get(`/managers/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  create: async (managerData) => {
+    try {
+      const response = await api.post("/managers", managerData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  update: async (id, managerData) => {
+    try {
+      const response = await api.put(`/managers/${id}`, managerData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  delete: async (id) => {
+    try {
+      const response = await api.delete(`/managers/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Login de manager
+  login: async (credentials) => {
+    try {
+      const response = await api.post("/managers/login", credentials);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+};
