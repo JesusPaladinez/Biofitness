@@ -6,7 +6,7 @@ export const ENDPOINTS = {
   MEMBERSHIPS: "/memberships",
   PLANS: "/plans",
   PAYMENT_METHODS: "/payment-methods",
-  ESTATES: "/estates",
+  STATES: "/states",
 };
 
 export const HTTP_STATUS = {

@@ -1,9 +1,20 @@
 import api from "./api";
 
 export const membershipService = {
+  // Obtener todas las membresías con detalles
   getAllWithDetails: async () => {
     try {
       const response = await api.get("/memberships");
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Obtener solo membresías activas (Vigente y Por vencer)
+  getActive: async () => {
+    try {
+      const response = await api.get("/memberships/active/list");
       return response.data;
     } catch (error) {
       throw error;
@@ -46,20 +57,10 @@ export const membershipService = {
     }
   },
 
-  // Obtener membresías por usuario
-  getByUser: async (userId) => {
+  // El endpoint para actualizar estados de todas las membresías
+  updateAllStates: async () => {
     try {
-      const response = await api.get(`/memberships/user/${userId}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  // Obtener membresías vencidas
-  getExpired: async () => {
-    try {
-      const response = await api.get("/memberships/expired");
+      const response = await api.put("/memberships/update-states/all");
       return response.data;
     } catch (error) {
       throw error;
