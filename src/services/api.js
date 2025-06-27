@@ -1,8 +1,16 @@
 import axios from "axios";
 
+// Detectar si está en desarrollo o producción
+const isDevelopment = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
+
+// URL base condicional
+const baseURL = isDevelopment 
+  ? "http://localhost:3000/api"  // Local
+  : "https://backendorchidgym-production.up.railway.app/api"; // Producción
+
 // Crear instancia de axios con configuración base
 const api = axios.create({
-  baseURL: "http://localhost:3000/api", // URL de tu backend
+  baseURL,
   timeout: 10000, // 10 segundos
   headers: {
     "Content-Type": "application/json",
