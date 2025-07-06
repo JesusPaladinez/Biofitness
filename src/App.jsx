@@ -1,9 +1,11 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom'
-import Home from './pages/Home'
-import Registration from './pages/Registration'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
+import Home from './pages/Home'
+import Registration from './pages/Registration'
+import Login from './pages/Login'
+import UserDetails from './pages/UserDetails'
 
 export default function App() {
   return (
@@ -12,8 +14,10 @@ export default function App() {
         <Nav />
         <main className="flex-1">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/registration" element={<Registration />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/membresias" element={<Home />} />
+            <Route path="/inscribir-usuario" element={<Registration />} />
+            <Route path="/user-details/:userId" element={<UserDetails />} />
           </Routes>
         </main>
         <Footer />

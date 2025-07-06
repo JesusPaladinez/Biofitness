@@ -49,6 +49,16 @@ export const userService = {
     }
   },
 
+  // Obtener usuario con todas sus membresías
+  getByIdWithAllMemberships: async (id) => {
+    try {
+      const response = await api.get(`/users/${id}/memberships`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   create: async (userData) => {
     try {
       const response = await api.post("/users", userData);
@@ -80,6 +90,16 @@ export const userService = {
   createUserWithMembership: async (userData) => {
     try {
       const response = await api.post('/users/with-membership', userData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Actualizar usuario con membresía en una sola transacción
+  updateUserWithMembership: async (id, userData) => {
+    try {
+      const response = await api.put(`/users/${id}/with-membership`, userData);
       return response.data;
     } catch (error) {
       throw error;

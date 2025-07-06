@@ -111,7 +111,6 @@ export default function Registration() {
               value={formData.phone}
               onChange={handleInputChange}
               className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
-              placeholder='Ej: 3197612345'
               required
             />
           </div>
@@ -193,7 +192,7 @@ export default function Registration() {
           <button
             type='submit'
             disabled={loading}
-            className='w-full bg-purple-800 text-white py-2 px-4 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors'
+            className='w-full bg-purple-800 text-white py-2 px-4 mt-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors'
           >
             {loading ? 'Procesando...' : 'Aceptar'}
           </button>
