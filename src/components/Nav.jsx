@@ -31,14 +31,14 @@ const Nav = () => {
                         />
                         <Dropdown open={menuOpen} onClose={() => setMenuOpen(false)}>
                             <button
-                                className="flex items-center gap-2 w-full text-left px-4 py-2 text-gray-700 hover:bg-purple-100"
+                                className="flex items-center gap-2 w-full text-left px-4 py-2 text-gray-700 hover:bg-purple-100 cursor-pointer"
                                 onClick={() => {/* lógica para ir a administradores */}}
                             >
                                 <FaUserGroup />
                                 Administradores
                             </button>
                             <button
-                                className="flex items-center gap-2 w-full text-left px-4 py-2 text-gray-700 hover:bg-purple-100"
+                                className="flex items-center gap-2 w-full text-left px-4 py-2 text-gray-700 hover:bg-purple-100 cursor-pointer"
                                 onClick={handleLogout}
                             >
                                 <LuLogOut />

@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { userService } from '../services/userService';
 import { planService } from '../services/planService';
 import { paymentMethodService } from '../services/paymentMethodService';
-import { managerService } from '../services/managerService';
 
 const UserDetails = () => {
     const { userId } = useParams();
@@ -28,36 +27,35 @@ const UserDetails = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                // Fetch user details and all memberships
-                const [userData, membershipsData] = await Promise.all([
+                
+                // Fetch all data in parallel
+                const [userData, membershipsData, plansData, methodsData] = await Promise.all([
                     userService.getById(userId),
-                    userService.getMembershipsByUser(userId)
+                    userService.getMembershipsByUser(userId),
+                    planService.getAll(),
+                    paymentMethodService.getAll()
                 ]);
                 
                 setUser(userData);
                 setMemberships(membershipsData);
+                setPlans(plansData);
+                setPaymentMethods(methodsData);
 
                 // Get the most recent membership for form data
                 const latestMembership = membershipsData.length > 0 ? membershipsData[0] : null;
                 
                 // Initialize form data with current values
+                // Find the plan and method that match the membership data
+                const matchingPlan = plansData.find(plan => plan.days_duration === latestMembership?.days_duration);
+                const matchingMethod = methodsData.find(method => method.name_method === latestMembership?.name_method);
+                
                 setFormData({
                     name_user: userData.name_user || '',
                     phone: userData.phone || '',
-                    id_plan: latestMembership?.id_plan || '',
-                    id_method: latestMembership?.id_method || '',
-                    id_manager: latestMembership?.id_manager || ''
+                    id_plan: matchingPlan ? matchingPlan.id_plan.toString() : '',
+                    id_method: matchingMethod ? matchingMethod.id_method.toString() : '',
+                    id_manager: latestMembership?.id_manager?.toString() || ''
                 });
-
-                // Fetch all dropdown data
-                const [plansData, methodsData, managersData] = await Promise.all([
-                    planService.getAll(),
-                    paymentMethodService.getAll(),
-                    managerService.getAll()
-                ]);
-                setPlans(plansData);
-                setPaymentMethods(methodsData);
-                setManagers(managersData);
             } catch (err) {
                 setError('Error al cargar los datos del usuario');
                 console.error(err);
@@ -69,16 +67,26 @@ const UserDetails = () => {
         fetchData();
     }, [userId]);
 
+
+
     // Function to update form data when editing starts
     const handleStartEditing = () => {
         const latestMembership = memberships.length > 0 ? memberships[0] : null;
-        setFormData({
+        
+        // Find the plan and method that match the membership data
+        const matchingPlan = plans.find(plan => plan.days_duration === latestMembership?.days_duration);
+        const matchingMethod = paymentMethods.find(method => method.name_method === latestMembership?.name_method);
+        
+        // Convert to string to ensure proper comparison with select values
+        const formDataToSet = {
             name_user: user.name_user || '',
             phone: user.phone || '',
-            id_plan: latestMembership?.id_plan || '',
-            id_method: latestMembership?.id_method || '',
-            id_manager: latestMembership?.id_manager || ''
-        });
+            id_plan: matchingPlan ? matchingPlan.id_plan.toString() : '',
+            id_method: matchingMethod ? matchingMethod.id_method.toString() : '',
+            id_manager: latestMembership?.id_manager?.toString() || ''
+        };
+        
+        setFormData(formDataToSet);
         setIsEditing(true);
     };
 
@@ -94,21 +102,36 @@ const UserDetails = () => {
         setIsEditing(false);
         // Reset form data to original values
         const latestMembership = memberships.length > 0 ? memberships[0] : null;
+        
+        // Find the plan and method that match the membership data
+        const matchingPlan = plans.find(plan => plan.days_duration === latestMembership?.days_duration);
+        const matchingMethod = paymentMethods.find(method => method.name_method === latestMembership?.name_method);
+        
         setFormData({
             name_user: user.name_user || '',
             phone: user.phone || '',
-            id_plan: latestMembership?.id_plan || '',
-            id_method: latestMembership?.id_method || '',
-            id_manager: latestMembership?.id_manager || ''
+            id_plan: matchingPlan ? matchingPlan.id_plan.toString() : '',
+            id_method: matchingMethod ? matchingMethod.id_method.toString() : '',
+            id_manager: latestMembership?.id_manager?.toString() || ''
         });
     };
 
     const handleUpdate = async () => {
         try {
             setLoading(true);
-            await userService.updateUserWithMembership(userId, formData);
             
-            // Refresh user data
+            // Solo enviar los campos que realmente necesitamos actualizar
+            const updateData = {
+                name_user: formData.name_user,
+                phone: formData.phone,
+                id_plan: formData.id_plan,
+                id_method: formData.id_method
+                // No enviamos id_manager para mantener el actual
+            };
+            
+            await userService.updateUserWithMembership(userId, updateData);
+            
+            // Refresh user and memberships data
             const [userData, membershipsData] = await Promise.all([
                 userService.getById(userId),
                 userService.getMembershipsByUser(userId)
@@ -156,7 +179,7 @@ const UserDetails = () => {
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold">Detalles del Usuario</h1>
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate('/membresias')}
                         className="text-gray-600 hover:text-gray-800 cursor-pointer"
                     >
                         ← Volver
@@ -205,33 +228,7 @@ const UserDetails = () => {
                                 </div>
                             )}
                         </div>
-
-                        {/* Método de Pago */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Método de Pago
-                            </label>
-                            {isEditing ? (
-                                <select
-                                    name="id_method"
-                                    value={formData.id_method}
-                                    onChange={handleInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
-                                >
-                                    <option value="">Seleccionar método</option>
-                                    {paymentMethods.map(method => (
-                                        <option key={method.id_method} value={method.id_method}>
-                                            {method.name_method}
-                                        </option>
-                                    ))}
-                                </select>
-                            ) : (
-                                <div className="px-3 py-2 bg-gray-50 rounded-md">
-                                    {memberships.length > 0 ? memberships[0].name_method : 'Sin membresías'}
-                                </div>
-                            )}
-                        </div>
-
+                        
                         {/* Plan */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -240,13 +237,12 @@ const UserDetails = () => {
                             {isEditing ? (
                                 <select
                                     name="id_plan"
-                                    value={formData.id_plan}
+                                    value={formData.id_plan || ''}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
                                 >
-                                    <option value="">Seleccionar plan</option>
                                     {plans.map(plan => (
-                                        <option key={plan.id_plan} value={plan.id_plan}>
+                                        <option key={plan.id_plan} value={plan.id_plan.toString()}>
                                             {plan.days_duration} {plan.days_duration === 1 ? 'día' : 'días'}
                                         </option>
                                     ))}
@@ -262,28 +258,27 @@ const UserDetails = () => {
                             )}
                         </div>
 
-                        {/* Administrador */}
+                        {/* Método de Pago */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Administrador
+                                Método de Pago
                             </label>
                             {isEditing ? (
                                 <select
-                                    name="id_manager"
-                                    value={formData.id_manager}
+                                    name="id_method"
+                                    value={formData.id_method || ''}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
                                 >
-                                    <option value="">Seleccionar administrador</option>
-                                    {managers.map(manager => (
-                                        <option key={manager.id_manager} value={manager.id_manager}>
-                                            {manager.name_manager}
+                                    {paymentMethods.map(method => (
+                                        <option key={method.id_method} value={method.id_method.toString()}>
+                                            {method.name_method}
                                         </option>
                                     ))}
                                 </select>
                             ) : (
                                 <div className="px-3 py-2 bg-gray-50 rounded-md">
-                                    {memberships.length > 0 ? memberships[0].name_manager : 'Sin administrador'}
+                                    {memberships.length > 0 ? memberships[0].name_method : 'Sin membresías'}
                                 </div>
                             )}
                         </div>
@@ -291,12 +286,24 @@ const UserDetails = () => {
 
                     {/* Información de todas las membresías */}
                     <div className="mt-8 pt-6 border-t border-gray-200">
-                        <h3 className="text-lg font-semibold mb-4">Historial de Membresías</h3>
+                        <h3 className="text-lg font-semibold mb-4">Historial de la Membresía</h3>
                         {memberships.length > 0 ? (
                             <div className="space-y-4">
                                 {memberships.map((membership, index) => (
                                     <div key={membership.id_membership} className="border border-gray-200 rounded-lg p-4">
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className={`grid gap-4 ${membership.name_state === 'Vencido' ? 'grid-cols-1 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-3'}`}>                                                                                    
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Último Pago
+                                                </label>
+                                                <div className="text-sm">{membership.last_payment}</div>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Fecha de Expiración
+                                                </label>
+                                                <div className="text-sm">{membership.expiration_date}</div>
+                                            </div>
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                                     Estado
@@ -309,18 +316,6 @@ const UserDetails = () => {
                                                     {membership.name_state}
                                                 </span>
                                             </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                    Fecha de Expiración
-                                                </label>
-                                                <div className="text-sm">{membership.expiration_date}</div>
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                    Último Pago
-                                                </label>
-                                                <div className="text-sm">{membership.last_payment}</div>
-                                            </div>
                                             {membership.name_state === 'Vencido' && (
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -331,12 +326,6 @@ const UserDetails = () => {
                                                     </div>
                                                 </div>
                                             )}
-                                        </div>
-                                        <div className="mt-2 text-xs text-gray-500">
-                                            Recibo: {membership.receipt_number} | 
-                                            Plan: {membership.days_duration} {membership.days_duration === 1 ? 'día' : 'días'} | 
-                                            Método: {membership.name_method} | 
-                                            Admin: {membership.name_manager}
                                         </div>
                                     </div>
                                 ))}
@@ -361,7 +350,7 @@ const UserDetails = () => {
                             <>
                                 <button
                                     onClick={handleCancel}
-                                    className="bg-gray-300 hover:bg-gray-400 text-black px-6 py-2 rounded-md font-medium transition-colors"
+                                    className="bg-gray-200 hover:bg-gray-300 text-black px-6 py-2 rounded-md font-medium transition-colors"
                                 >
                                     Cancelar
                                 </button>
