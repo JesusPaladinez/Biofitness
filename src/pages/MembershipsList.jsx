@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Table from '../components/Table';
-import { GoArrowRight } from "react-icons/go";
+import MembreshipsTable from '../components/MembreshipsTable';
+import { FiChevronRight } from "react-icons/fi";
 import { useNavigate } from 'react-router-dom';
 import { membershipService } from '../services/membershipService';
 
-const Home = () => {
+const MembershipsList = () => {
     const navigate = useNavigate();
     const [memberships, setMemberships] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -57,12 +57,12 @@ const Home = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <button
-                        className="group bg-purple-800 text-white hover:text-white font-semibold py-2 px-4 rounded-lg transition-colors cursor-pointer"
+                        className="group bg-purple-200 text-purple-800 font-medium py-2 px-4 rounded-lg transition-colors cursor-pointer"
                         onClick={() => navigate('/inscribir-usuario')}
                     >
-                        <span className="flex items-center gap-2">
+                        <span className="flex items-center gap-1">
                             Inscribir
-                            <GoArrowRight className="hidden group-hover:inline text-2xl" />
+                            <FiChevronRight className="hidden group-hover:inline text-xl" />
                         </span>
                     </button>
                 </div>
@@ -72,7 +72,7 @@ const Home = () => {
             ) : error ? (
                 <div className="text-red-500">{error}</div>
             ) : (
-                <Table
+                <MembreshipsTable
                     data={memberships.filter(m => {
                         const nombre = normalize(m.name_user);
                         const telefono = normalize(m.user_phone);
@@ -93,4 +93,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default MembershipsList;

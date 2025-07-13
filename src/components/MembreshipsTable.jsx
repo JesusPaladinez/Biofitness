@@ -1,8 +1,8 @@
 import React from 'react';
 import { FaCaretDown } from "react-icons/fa6";
-import DetailsButton from './DetailsButton';
+import ButtonUserDetails from './ButtonUserDetails';
 
-const Table = ({ data, states = [], selectedState = "todos", onStateChange, plans = [], selectedPlan = "todos", onPlanChange }) => {
+const MembreshipsTable = ({ data, states = [], selectedState = "todos", onStateChange, plans = [], selectedPlan = "todos", onPlanChange }) => {
     return (
         <div className="overflow-x-auto overflow-y-auto max-h-[500px] border-1 border-gray-300 rounded-2xl">
             <table className="min-w-full bg-white">
@@ -56,7 +56,7 @@ const Table = ({ data, states = [], selectedState = "todos", onStateChange, plan
                 <tbody>
                     {data.map((item) => (
                         <tr 
-                            key={item.id} 
+                            key={item.id_membership} 
                             className="hover:bg-purple-50"
                         >
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.id_membership}</td> 
@@ -83,7 +83,7 @@ const Table = ({ data, states = [], selectedState = "todos", onStateChange, plan
                                 {item.days_arrears > 0 ? item.days_arrears : ''}
                             </td>
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
-                                <DetailsButton 
+                                <ButtonUserDetails 
                                     userId={item.id_user} 
                                 />
                             </td>
@@ -95,4 +95,4 @@ const Table = ({ data, states = [], selectedState = "todos", onStateChange, plan
     );
 };
 
-export default Table; 
+export default MembreshipsTable; 

@@ -6,7 +6,7 @@ const isDevelopment = process.env.NODE_ENV === 'development' || !process.env.NOD
 // URL base condicional
 const baseURL = isDevelopment 
   ? "http://localhost:3000/api"  // Local
-  : "https://backendorchidgym-production.up.railway.app/api"; // Producción
+  : "https://backendorchidgym.onrender.com/api"; // Producción
 
 // Crear instancia de axios con configuración base
 const api = axios.create({

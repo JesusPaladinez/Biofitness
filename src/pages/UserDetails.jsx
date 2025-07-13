@@ -3,6 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { userService } from '../services/userService';
 import { planService } from '../services/planService';
 import { paymentMethodService } from '../services/paymentMethodService';
+import { MdEdit } from "react-icons/md";
+import { FiChevronLeft } from "react-icons/fi";
+import { FaCaretDown } from "react-icons/fa";
 
 const UserDetails = () => {
     const { userId } = useParams();
@@ -20,7 +23,8 @@ const UserDetails = () => {
         phone: '',
         id_plan: '',
         id_method: '',
-        id_manager: ''
+        id_manager: '',
+        receipt_number: ''
     });
 
     useEffect(() => {
@@ -54,7 +58,8 @@ const UserDetails = () => {
                     phone: userData.phone || '',
                     id_plan: matchingPlan ? matchingPlan.id_plan.toString() : '',
                     id_method: matchingMethod ? matchingMethod.id_method.toString() : '',
-                    id_manager: latestMembership?.id_manager?.toString() || ''
+                    id_manager: latestMembership?.id_manager?.toString() || '',
+                    receipt_number: latestMembership?.receipt_number || ''
                 });
             } catch (err) {
                 setError('Error al cargar los datos del usuario');
@@ -83,7 +88,8 @@ const UserDetails = () => {
             phone: user.phone || '',
             id_plan: matchingPlan ? matchingPlan.id_plan.toString() : '',
             id_method: matchingMethod ? matchingMethod.id_method.toString() : '',
-            id_manager: latestMembership?.id_manager?.toString() || ''
+            id_manager: latestMembership?.id_manager?.toString() || '',
+            receipt_number: latestMembership?.receipt_number || ''
         };
         
         setFormData(formDataToSet);
@@ -112,25 +118,24 @@ const UserDetails = () => {
             phone: user.phone || '',
             id_plan: matchingPlan ? matchingPlan.id_plan.toString() : '',
             id_method: matchingMethod ? matchingMethod.id_method.toString() : '',
-            id_manager: latestMembership?.id_manager?.toString() || ''
+            id_manager: latestMembership?.id_manager?.toString() || '',
+            receipt_number: latestMembership?.receipt_number || ''
         });
     };
 
     const handleUpdate = async () => {
         try {
             setLoading(true);
-            
             // Solo enviar los campos que realmente necesitamos actualizar
             const updateData = {
                 name_user: formData.name_user,
                 phone: formData.phone,
                 id_plan: formData.id_plan,
-                id_method: formData.id_method
+                id_method: formData.id_method,
+                receipt_number: formData.receipt_number
                 // No enviamos id_manager para mantener el actual
             };
-            
             await userService.updateUserWithMembership(userId, updateData);
-            
             // Refresh user and memberships data
             const [userData, membershipsData] = await Promise.all([
                 userService.getById(userId),
@@ -139,11 +144,10 @@ const UserDetails = () => {
             setUser(userData);
             setMemberships(membershipsData);
             setIsEditing(false);
-            
             alert('Usuario actualizado exitosamente');
         } catch (err) {
             setError('Error al actualizar el usuario');
-            console.error(err);
+            console.error('Backend error:', err.response?.data || err);
         } finally {
             setLoading(false);
         }
@@ -180,9 +184,12 @@ const UserDetails = () => {
                     <h1 className="text-3xl font-bold">Detalles del Usuario</h1>
                     <button
                         onClick={() => navigate('/membresias')}
-                        className="text-gray-600 hover:text-gray-800 cursor-pointer"
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md font-medium transition-colors cursor-pointer"
                     >
-                        ← Volver
+                        <span className="flex items-center gap-1">
+                            <FiChevronLeft className="text-xl" />
+                            Volver
+                        </span>
                     </button>
                 </div>
 
@@ -235,18 +242,21 @@ const UserDetails = () => {
                                 Plan
                             </label>
                             {isEditing ? (
-                                <select
-                                    name="id_plan"
-                                    value={formData.id_plan || ''}
-                                    onChange={handleInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
-                                >
-                                    {plans.map(plan => (
-                                        <option key={plan.id_plan} value={plan.id_plan.toString()}>
-                                            {plan.days_duration} {plan.days_duration === 1 ? 'día' : 'días'}
-                                        </option>
-                                    ))}
-                                </select>
+                                <div className="relative">
+                                    <select
+                                        name="id_plan"
+                                        value={formData.id_plan || ''}
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300 appearance-none cursor-pointer"
+                                    >
+                                        {plans.map(plan => (
+                                            <option key={plan.id_plan} value={plan.id_plan.toString()}>
+                                                {plan.days_duration} {plan.days_duration === 1 ? 'día' : 'días'}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <FaCaretDown className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
+                                </div>
                             ) : (
                                 <div className="px-3 py-2 bg-gray-50 rounded-md">
                                     {memberships.length > 0 ? (
@@ -264,76 +274,78 @@ const UserDetails = () => {
                                 Método de Pago
                             </label>
                             {isEditing ? (
-                                <select
-                                    name="id_method"
-                                    value={formData.id_method || ''}
-                                    onChange={handleInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
-                                >
-                                    {paymentMethods.map(method => (
-                                        <option key={method.id_method} value={method.id_method.toString()}>
-                                            {method.name_method}
-                                        </option>
-                                    ))}
-                                </select>
+                                <div className="relative">
+                                    <select
+                                        name="id_method"
+                                        value={formData.id_method || ''}
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300 appearance-none cursor-pointer"
+                                    >
+                                        {paymentMethods.map(method => (
+                                            <option key={method.id_method} value={method.id_method.toString()}>
+                                                {method.name_method}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <FaCaretDown className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
+                                </div>
                             ) : (
                                 <div className="px-3 py-2 bg-gray-50 rounded-md">
                                     {memberships.length > 0 ? memberships[0].name_method : 'Sin membresías'}
                                 </div>
                             )}
                         </div>
+
+                        {/* Receipt Number */}
+                        {isEditing && (
+                            <div className="col-span-1 md:col-span-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Número de Recibo</label>
+                                <input
+                                    type="text"
+                                    name="receipt_number"
+                                    value={formData.receipt_number}
+                                    onChange={handleInputChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
+                                    required
+                                />
+                            </div>
+                        )}
                     </div>
 
-                    {/* Información de todas las membresías */}
+                    {/* Membresía actual */}
                     <div className="mt-8 pt-6 border-t border-gray-200">
-                        <h3 className="text-lg font-semibold mb-4">Historial de la Membresía</h3>
+                        <h3 className="text-lg font-semibold mb-4">Membresía Actual</h3>
                         {memberships.length > 0 ? (
-                            <div className="space-y-4">
-                                {memberships.map((membership, index) => (
-                                    <div key={membership.id_membership} className="border border-gray-200 rounded-lg p-4">
-                                        <div className={`grid gap-4 ${membership.name_state === 'Vencido' ? 'grid-cols-1 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-3'}`}>                                                                                    
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                    Último Pago
-                                                </label>
-                                                <div className="text-sm">{membership.last_payment}</div>
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                    Fecha de Expiración
-                                                </label>
-                                                <div className="text-sm">{membership.expiration_date}</div>
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                    Estado
-                                                </label>
-                                                <span className={`px-2 py-1 rounded text-sm ${
-                                                    membership.name_state === 'Vigente' ? 'bg-green-100 text-green-800' :
-                                                    membership.name_state === 'Por vencer' ? 'bg-yellow-100 text-yellow-800' :
-                                                    'bg-red-100 text-red-800'
-                                                }`}>
-                                                    {membership.name_state}
-                                                </span>
-                                            </div>
-                                            {membership.name_state === 'Vencido' && (
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                        Días en Mora
-                                                    </label>
-                                                    <div className="text-sm font-semibold text-red-600">
-                                                        {membership.days_arrears}
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
+                            <div className="border border-gray-200 rounded-lg p-4">
+                                <div className="grid gap-4 grid-cols-1 md:grid-cols-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Último Pago</label>
+                                        <div className="text-sm">{memberships[0].last_payment}</div>
                                     </div>
-                                ))}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de Expiración</label>
+                                        <div className="text-sm">{memberships[0].expiration_date}</div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+                                        <span className={`px-2 py-1 rounded text-sm ${
+                                            memberships[0].name_state === 'Vigente' ? 'bg-green-100 text-green-800' :
+                                            memberships[0].name_state === 'Por vencer' ? 'bg-yellow-100 text-yellow-800' :
+                                            'bg-red-100 text-red-800'
+                                        }`}>
+                                            {memberships[0].name_state}
+                                        </span>
+                                    </div>
+                                    {memberships[0].name_state === 'Vencido' && (
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Días en Mora</label>
+                                            <div className="text-sm font-semibold text-red-600">{memberships[0].days_arrears}</div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         ) : (
-                            <div className="text-center py-4 text-gray-500">
-                                Este usuario no tiene membresías registradas
-                            </div>
+                            <div className="text-center py-4 text-gray-500">Este usuario no tiene membresía registrada</div>
                         )}
                     </div>
 
@@ -342,22 +354,23 @@ const UserDetails = () => {
                         {!isEditing ? (
                             <button
                                 onClick={handleStartEditing}
-                                className="bg-purple-800 hover:bg-purple-900 text-white px-6 py-2 rounded-md font-medium transition-colors"
+                                className="flex items-center gap-2 bg-purple-200 hover:bg-purple-300 text-purple-800 px-4 py-2 rounded-md font-medium transition-colors cursor-pointer"
                             >
                                 Editar
+                                <MdEdit />
                             </button>
                         ) : (
                             <>
                                 <button
                                     onClick={handleCancel}
-                                    className="bg-gray-200 hover:bg-gray-300 text-black px-6 py-2 rounded-md font-medium transition-colors"
+                                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-md font-medium transition-colors cursor-pointer"
                                 >
                                     Cancelar
                                 </button>
                                 <button
                                     onClick={handleUpdate}
                                     disabled={loading}
-                                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-medium transition-colors disabled:opacity-50"
+                                    className="bg-purple-200 hover:bg-purple-300 text-purple-800 px-6 py-2 rounded-md font-medium transition-colors disabled:opacity-50 cursor-pointer"
                                 >
                                     {loading ? 'Actualizando...' : 'Actualizar'}
                                 </button>
