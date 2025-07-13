@@ -126,6 +126,15 @@ const UserDetails = () => {
     const handleUpdate = async () => {
         try {
             setLoading(true);
+            setError(null);
+            
+            // Validación adicional en el frontend
+            if (!formData.receipt_number.trim()) {
+                setError('El número de recibo es requerido');
+                setLoading(false);
+                return;
+            }
+            
             // Solo enviar los campos que realmente necesitamos actualizar
             const updateData = {
                 name_user: formData.name_user,
@@ -146,7 +155,8 @@ const UserDetails = () => {
             setIsEditing(false);
             alert('Usuario actualizado exitosamente');
         } catch (err) {
-            setError('Error al actualizar el usuario');
+            const errorMessage = err.response?.data?.error || 'Error al actualizar el usuario';
+            setError(errorMessage);
             console.error('Backend error:', err.response?.data || err);
         } finally {
             setLoading(false);

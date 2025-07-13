@@ -65,11 +65,20 @@ export default function RegisterUser() {
     setLoading(true);
     setError(null);
 
+    // Validación adicional en el frontend
+    if (!formData.receipt_number.trim()) {
+      setError('El número de recibo es requerido');
+      setLoading(false);
+      return;
+    }
+
     try {
       await userService.createUserWithMembership(formData);
       navigate('/membresias');
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al crear la inscripción');
+      const errorMessage = err.response?.data?.error || 'Error al crear la inscripción';
+      setError(errorMessage);
+      console.error('Error details:', err.response?.data);
     } finally {
       setLoading(false);
     }
