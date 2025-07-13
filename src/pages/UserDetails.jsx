@@ -144,7 +144,18 @@ const UserDetails = () => {
                 receipt_number: formData.receipt_number
                 // No enviamos id_manager para mantener el actual
             };
-            await userService.updateUserWithMembership(userId, updateData);
+            
+            // Logs para debugging
+            console.log('=== UPDATE USER DEBUG ===');
+            console.log('Update data being sent:', updateData);
+            console.log('Receipt number being sent:', updateData.receipt_number);
+            console.log('Receipt number type:', typeof updateData.receipt_number);
+            console.log('Receipt number length:', updateData.receipt_number.length);
+            
+            console.log('Sending request to updateUserWithMembership...');
+            const response = await userService.updateUserWithMembership(userId, updateData);
+            console.log('Response received:', response);
+            
             // Refresh user and memberships data
             const [userData, membershipsData] = await Promise.all([
                 userService.getById(userId),
@@ -155,6 +166,13 @@ const UserDetails = () => {
             setIsEditing(false);
             alert('Usuario actualizado exitosamente');
         } catch (err) {
+            console.error('=== ERROR DETAILS ===');
+            console.error('Full error object:', err);
+            console.error('Error response:', err.response);
+            console.error('Error response data:', err.response?.data);
+            console.error('Error message:', err.message);
+            console.error('Error status:', err.response?.status);
+            
             const errorMessage = err.response?.data?.error || 'Error al actualizar el usuario';
             setError(errorMessage);
             console.error('Backend error:', err.response?.data || err);

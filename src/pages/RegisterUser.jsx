@@ -72,10 +72,26 @@ export default function RegisterUser() {
       return;
     }
 
+    // Logs para debugging
+    console.log('=== REGISTER USER DEBUG ===');
+    console.log('Form data being sent:', formData);
+    console.log('Receipt number being sent:', formData.receipt_number);
+    console.log('Receipt number type:', typeof formData.receipt_number);
+    console.log('Receipt number length:', formData.receipt_number.length);
+
     try {
-      await userService.createUserWithMembership(formData);
+      console.log('Sending request to createUserWithMembership...');
+      const response = await userService.createUserWithMembership(formData);
+      console.log('Response received:', response);
       navigate('/membresias');
     } catch (err) {
+      console.error('=== ERROR DETAILS ===');
+      console.error('Full error object:', err);
+      console.error('Error response:', err.response);
+      console.error('Error response data:', err.response?.data);
+      console.error('Error message:', err.message);
+      console.error('Error status:', err.response?.status);
+      
       const errorMessage = err.response?.data?.error || 'Error al crear la inscripción';
       setError(errorMessage);
       console.error('Error details:', err.response?.data);
