@@ -11,7 +11,7 @@ const baseURL = isDevelopment
 // Crear instancia de axios con configuración base
 const api = axios.create({
   baseURL,
-  timeout: 10000, // 10 segundos
+  timeout: 60000, // 60 segundos
   headers: {
     "Content-Type": "application/json",
   },
