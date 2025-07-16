@@ -50,6 +50,11 @@ export const managerService = {
   login: async (credentials) => {
     try {
       const response = await api.post("/managers/login", credentials);
+      // Guardar el token JWT en localStorage
+      if (response.data && response.data.token) {
+        localStorage.setItem('managerToken', response.data.token);
+        localStorage.setItem('managerData', JSON.stringify(response.data.manager));
+      }
       return response.data;
     } catch (error) {
       throw error;

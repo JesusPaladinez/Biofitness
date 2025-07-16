@@ -7,7 +7,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [managers, setManagers] = useState([]);
   const [formData, setFormData] = useState({
-    id_manager: '',
+    name_manager: '',
     password: ''
   });
   const [loading, setLoading] = useState(false);
@@ -31,22 +31,20 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // setLoading(true);
-    // setError(null);
-    // try {
-    //   // Suponemos que existe este método en managerService
-    //   await managerService.login({
-    //     id_manager: formData.id_manager,
-    //     password: formData.password
-    //   });
-    //   navigate('/membresias');
-    // } catch (err) {
-    //   setError(err.response?.data?.error || 'Credenciales incorrectas');
-    // } finally {
-    //   setLoading(false);
-    // }
-    navigate("/membresias")
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      await managerService.login({
+        name_manager: formData.name_manager,
+        password: formData.password
+      });
+      navigate('/membresias');
+    } catch (err) {
+      setError(err.response?.data?.error || 'Credenciales incorrectas');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -60,18 +58,19 @@ export default function Login() {
         )}
         <form className='space-y-4' onSubmit={handleSubmit}>
           <div>
-            <label className='block text-gray-500 text-sm mb-2' htmlFor='id_manager'>Administrador</label>
+            <label className='block text-gray-500 text-sm mb-2' htmlFor='name_manager'>Administrador</label>
             <div className="relative">
               <select
-                id='id_manager'
-                name='id_manager'
-                value={formData.id_manager}
+                id='name_manager'
+                name='name_manager'
+                value={formData.name_manager}
                 onChange={handleInputChange}
                 className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300 appearance-none cursor-pointer'
+                required
               >
                 <option value='' className='text-gray-500'>Seleccione el administrador</option>
                 {managers.map(manager => (
-                  <option key={manager.id_manager} value={manager.id_manager}>
+                  <option key={manager.id_manager} value={manager.name_manager}>
                     {manager.name_manager}
                   </option>
                 ))}
@@ -88,6 +87,7 @@ export default function Login() {
               value={formData.password}
               onChange={handleInputChange}
               className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
+              required
             />
           </div>
           <button

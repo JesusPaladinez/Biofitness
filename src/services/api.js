@@ -20,8 +20,8 @@ const api = axios.create({
 // Interceptor para requests
 api.interceptors.request.use(
   (config) => {
-    // Aquí puedes agregar el token de autenticación si lo tienes
-    const token = localStorage.getItem("token");
+    // Usar el token de manager guardado en localStorage
+    const token = localStorage.getItem("managerToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

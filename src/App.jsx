@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import Login from './pages/Login'
@@ -9,6 +9,7 @@ import UserDetails from './pages/UserDetails'
 import ManagersList from './pages/ManagersList'
 import ManagerProfile from './pages/ManagerProfile'
 import RegisterManager from './pages/RegisterManager'
+import RequireAuth from './components/RequireAuth'
 
 export default function App() {
   return (
@@ -18,12 +19,12 @@ export default function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/membresias" element={<MembershipsList />} />
-            <Route path="/inscribir-usuario" element={<RegisterUser />} />
-            <Route path="/detalles-usuario/:userId" element={<UserDetails />} />
-            <Route path="/perfil-administrador/:managerId" element={<ManagerProfile />} />
-            <Route path="/administradores" element={<ManagersList />} />
-            <Route path="/agregar-administrador" element={<RegisterManager />} />
+            <Route path="/membresias" element={<RequireAuth><MembershipsList /></RequireAuth>} />
+            <Route path="/inscribir-usuario" element={<RequireAuth><RegisterUser /></RequireAuth>} />
+            <Route path="/detalles-usuario/:userId" element={<RequireAuth><UserDetails /></RequireAuth>} />
+            <Route path="/perfil-administrador/:managerId" element={<RequireAuth><ManagerProfile /></RequireAuth>} />
+            <Route path="/administradores" element={<RequireAuth><ManagersList /></RequireAuth>} />
+            <Route path="/agregar-administrador" element={<RequireAuth><RegisterManager /></RequireAuth>} />
           </Routes>
         </main>
         <Footer />

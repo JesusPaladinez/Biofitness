@@ -27,6 +27,11 @@ const UserDetails = () => {
         receipt_number: ''
     });
 
+    // Obtener manager logueado
+    const managerData = JSON.parse(localStorage.getItem('managerData'));
+    const loggedManagerId = managerData?.id_manager;
+    const loggedManagerName = managerData?.name_manager;
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -141,20 +146,10 @@ const UserDetails = () => {
                 phone: formData.phone,
                 id_plan: formData.id_plan,
                 id_method: formData.id_method,
-                receipt_number: formData.receipt_number
-                // No enviamos id_manager para mantener el actual
+                receipt_number: formData.receipt_number,
             };
             
-            // Logs para debugging
-            console.log('=== UPDATE USER DEBUG ===');
-            console.log('Update data being sent:', updateData);
-            console.log('Receipt number being sent:', updateData.receipt_number);
-            console.log('Receipt number type:', typeof updateData.receipt_number);
-            console.log('Receipt number length:', updateData.receipt_number.length);
-            
-            console.log('Sending request to updateUserWithMembership...');
             const response = await userService.updateUserWithMembership(userId, updateData);
-            console.log('Response received:', response);
             
             // Refresh user and memberships data
             const [userData, membershipsData] = await Promise.all([
@@ -336,6 +331,16 @@ const UserDetails = () => {
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
                                     required
                                 />
+                            </div>
+                        )}
+
+                        {/* Administrador */}
+                        {isEditing && (
+                            <div className="col-span-1 md:col-span-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Administrador</label>
+                                <div className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-700">
+                                    {loggedManagerName}
+                                </div>
                             </div>
                         )}
                     </div>

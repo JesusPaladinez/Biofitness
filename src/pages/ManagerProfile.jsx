@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { managerService } from '../services/managerService';
 import { MdEdit } from "react-icons/md";
 import { FiChevronLeft } from "react-icons/fi";
 import { useNavigate, useParams } from 'react-router-dom';
 
-const ManagerProfile = () => {
+export default function ManagerProfile() {
   const navigate = useNavigate();
   const { managerId } = useParams();
   const id = managerId || 1;
@@ -299,6 +299,4 @@ const ManagerProfile = () => {
       </div>
     </div>
   );
-};
-
-export default ManagerProfile;
+}

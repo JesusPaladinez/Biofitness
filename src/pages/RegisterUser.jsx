@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { userService } from '../services/userService';
 import { planService } from '../services/planService';
 import { paymentMethodService } from '../services/paymentMethodService';
-import { managerService } from '../services/managerService';
 import { FaCaretDown } from "react-icons/fa";
 
 export default function RegisterUser() {
@@ -13,36 +12,36 @@ export default function RegisterUser() {
     phone: '',
     id_plan: '',
     id_method: '',
-    id_manager: '',
     receipt_number: ''
   });
   const [plans, setPlans] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
-  const [managers, setManagers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [manager, setManager] = useState(null);
 
-  // Cargar datos para los selects
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [plansData, methodsData, managersData] = await Promise.all([
+        const [plansData, methodsData] = await Promise.all([
           planService.getAll(),
-          paymentMethodService.getAll(),
-          managerService.getAll()
+          paymentMethodService.getAll()
         ]);
         setPlans(plansData);
         setPaymentMethods(methodsData);
-        setManagers(managersData);
       } catch (err) {
         setError('Error al cargar los datos');
       }
     };
     fetchData();
+    // Obtener manager logueado
+    const managerData = localStorage.getItem('managerData');
+    if (managerData) {
+      setManager(JSON.parse(managerData));
+    }
   }, []);
 
-  // Calcular precio cuando cambie el plan
   useEffect(() => {
     if (formData.id_plan) {
       const plan = plans.find(p => p.id_plan === parseInt(formData.id_plan));
@@ -64,37 +63,14 @@ export default function RegisterUser() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
-    // Validación adicional en el frontend
-    if (!formData.receipt_number.trim()) {
-      setError('El número de recibo es requerido');
-      setLoading(false);
-      return;
-    }
-
-    // Logs para debugging
-    console.log('=== REGISTER USER DEBUG ===');
-    console.log('Form data being sent:', formData);
-    console.log('Receipt number being sent:', formData.receipt_number);
-    console.log('Receipt number type:', typeof formData.receipt_number);
-    console.log('Receipt number length:', formData.receipt_number.length);
-
     try {
-      console.log('Sending request to createUserWithMembership...');
-      const response = await userService.createUserWithMembership(formData);
-      console.log('Response received:', response);
+      await userService.createUserWithMembership({
+        ...formData,
+      });
       navigate('/membresias');
     } catch (err) {
-      console.error('=== ERROR DETAILS ===');
-      console.error('Full error object:', err);
-      console.error('Error response:', err.response);
-      console.error('Error response data:', err.response?.data);
-      console.error('Error message:', err.message);
-      console.error('Error status:', err.response?.status);
-      
       const errorMessage = err.response?.data?.error || 'Error al crear la inscripción';
       setError(errorMessage);
-      console.error('Error details:', err.response?.data);
     } finally {
       setLoading(false);
     }
@@ -103,16 +79,12 @@ export default function RegisterUser() {
   return (
     <div className='flex flex-col items-center justify-center min-h-screen p-4'>
       <div className='bg-white p-8 rounded-2xl border-1 border-gray-300 w-full max-w-md'>
-        <h2 className='text-2xl font-semibold text-center mb-6 text-black'>Inscripción de Usuario
-          
-        </h2>
-
+        <h2 className='text-2xl font-semibold text-center mb-6 text-black'>Inscripción de Usuario</h2>
         {error && (
           <div className='mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded'>
             {error}
           </div>
         )}
-
         <form className='space-y-4' onSubmit={handleSubmit}>
           <div>
             <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='name_user'>
@@ -192,29 +164,15 @@ export default function RegisterUser() {
             </div>
           </div>
 
-          <div>
-            <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='id_manager'>
-              Administrador
-            </label>
-            <div className="relative">
-              <select
-                id='id_manager'
-                name='id_manager'
-                value={formData.id_manager}
-                onChange={handleInputChange}
-                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300 appearance-none cursor-pointer'
-                required
-              >
-                <option value='' className='text-gray-500'>Seleccione el administrador</option>
-                {managers.map(manager => (
-                  <option key={manager.id_manager} value={manager.id_manager}>
-                    {manager.name_manager}
-                  </option>
-                ))}
-              </select>
-              <FaCaretDown className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
+          {/* Mostrar el nombre del manager logueado */}
+          {manager && (
+            <div>
+              <label className='block font-medium text-gray-700 text-sm mb-2'>Administrador</label>
+              <div className='w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-700'>
+                {manager.name_manager}
+              </div>
             </div>
-          </div>
+          )}
 
           <div>
             <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='receipt_number'>

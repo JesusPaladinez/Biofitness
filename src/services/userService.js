@@ -89,18 +89,9 @@ export const userService = {
   // Crear usuario con membresía en una sola transacción
   createUserWithMembership: async (userData) => {
     try {
-      console.log('=== USER SERVICE DEBUG ===');
-      console.log('userData being sent to API:', userData);
-      console.log('Receipt number in userData:', userData.receipt_number);
-      console.log('API endpoint:', '/users/with-membership');
-      
       const response = await api.post('/users/with-membership', userData);
-      console.log('API response received:', response);
       return response.data;
     } catch (error) {
-      console.error('=== USER SERVICE ERROR ===');
-      console.error('Error in createUserWithMembership:', error);
-      console.error('Error response:', error.response);
       throw error;
     }
   },
@@ -108,18 +99,9 @@ export const userService = {
   // Actualizar usuario con membresía en una sola transacción
   updateUserWithMembership: async (id, userData) => {
     try {
-      console.log('=== USER SERVICE UPDATE DEBUG ===');
-      console.log('userData being sent to API:', userData);
-      console.log('Receipt number in userData:', userData.receipt_number);
-      console.log('API endpoint:', `/users/${id}/with-membership`);
-      
       const response = await api.put(`/users/${id}/with-membership`, userData);
-      console.log('API response received:', response);
       return response.data;
     } catch (error) {
-      console.error('=== USER SERVICE UPDATE ERROR ===');
-      console.error('Error in updateUserWithMembership:', error);
-      console.error('Error response:', error.response);
       throw error;
     }
   },
