@@ -66,6 +66,7 @@ export default function RegisterUser() {
     try {
       await userService.createUserWithMembership({
         ...formData,
+        id_manager: manager?.id_manager 
       });
       navigate('/membresias');
     } catch (err) {
@@ -163,16 +164,6 @@ export default function RegisterUser() {
               <FaCaretDown className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
             </div>
           </div>
-
-          {/* Mostrar el nombre del manager logueado */}
-          {manager && (
-            <div>
-              <label className='block font-medium text-gray-700 text-sm mb-2'>Administrador</label>
-              <div className='w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-700'>
-                {manager.name_manager}
-              </div>
-            </div>
-          )}
 
           <div>
             <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='receipt_number'>

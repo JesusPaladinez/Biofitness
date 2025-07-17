@@ -22,7 +22,7 @@ export default function App() {
             <Route path="/membresias" element={<RequireAuth><MembershipsList /></RequireAuth>} />
             <Route path="/inscribir-usuario" element={<RequireAuth><RegisterUser /></RequireAuth>} />
             <Route path="/detalles-usuario/:userId" element={<RequireAuth><UserDetails /></RequireAuth>} />
-            <Route path="/perfil-administrador/:managerId" element={<RequireAuth><ManagerProfile /></RequireAuth>} />
+            <Route path="/perfil-administrador" element={<RequireAuth><ManagerProfile /></RequireAuth>} />
             <Route path="/administradores" element={<RequireAuth><ManagersList /></RequireAuth>} />
             <Route path="/agregar-administrador" element={<RequireAuth><RegisterManager /></RequireAuth>} />
           </Routes>

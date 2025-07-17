@@ -11,12 +11,16 @@ const Nav = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Obtener el nombre del manager logueado
+    // Obtener el nombre y el id del manager logueado
     let managerName = 'Iniciado';
+    let managerId = null;
     try {
       const managerData = JSON.parse(localStorage.getItem('managerData'));
       if (managerData && managerData.name_manager) {
         managerName = managerData.name_manager;
+      }
+      if (managerData && managerData.id_manager) {
+        managerId = managerData.id_manager;
       }
     } catch (e) {}
 
@@ -25,7 +29,7 @@ const Nav = () => {
     }
 
     const handleProfile = () => {
-        navigate('/perfil-administrador/1');
+        navigate('/perfil-administrador');
         setMenuOpen(false);
     };
 
@@ -67,7 +71,12 @@ const Nav = () => {
                     onClick={handleHome}
                 />
                 <div className='flex items-center gap-10 relative'>
-                    <p className='text-white text-2xl font-medium'>{managerName}</p>
+                    <p 
+                        className='text-white text-2xl font-medium cursor-pointer' 
+                        onClick={handleProfile}
+                    >
+                        {managerName}
+                    </p>
                     <div>
                         <CgMenuRight
                             className='text-white text-2xl cursor-pointer'

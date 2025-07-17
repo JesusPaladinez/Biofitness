@@ -147,6 +147,7 @@ const UserDetails = () => {
                 id_plan: formData.id_plan,
                 id_method: formData.id_method,
                 receipt_number: formData.receipt_number,
+                id_manager: loggedManagerId 
             };
             
             const response = await userService.updateUserWithMembership(userId, updateData);
@@ -331,16 +332,6 @@ const UserDetails = () => {
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
                                     required
                                 />
-                            </div>
-                        )}
-
-                        {/* Administrador */}
-                        {isEditing && (
-                            <div className="col-span-1 md:col-span-2">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Administrador</label>
-                                <div className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-700">
-                                    {loggedManagerName}
-                                </div>
                             </div>
                         )}
                     </div>

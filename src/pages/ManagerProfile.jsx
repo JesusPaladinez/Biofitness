@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { managerService } from '../services/managerService';
 import { MdEdit } from "react-icons/md";
 import { FiChevronLeft } from "react-icons/fi";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function ManagerProfile() {
   const navigate = useNavigate();
-  const { managerId } = useParams();
-  const id = managerId || 1;
+  // Obtener manager logueado desde localStorage
+  const managerData = JSON.parse(localStorage.getItem('managerData'));
+  const id = managerData?.id_manager;
   const [manager, setManager] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,10 +28,15 @@ export default function ManagerProfile() {
   const [passwordSuccess, setPasswordSuccess] = useState('');
 
   useEffect(() => {
+    if (!id) {
+      setError('No hay sesión activa.');
+      setLoading(false);
+      return;
+    }
     const fetchManager = async () => {
       try {
         setLoading(true);
-        const data = await managerService.getById(id); // id_manager dinámico
+        const data = await managerService.getById(id); // id_manager del logueado
         setManager(data);
         setFormData({
           name_manager: data.name_manager || '',
