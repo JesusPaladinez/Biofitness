@@ -63,7 +63,7 @@ const Nav = () => {
 
     // En las demás páginas, mostrar nombre y dropdown
     return (
-        <nav className="bg-black w-full py-8 px-16">
+        <nav className="bg-black w-full py-8 pl-16 pr-12">
             <div className="container mx-auto flex items-center justify-between">
                 <img 
                     src="/LogoOrchidGym.png" 
