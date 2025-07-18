@@ -8,11 +8,6 @@ body {
     background-color: #f9fafb;
 }
 
-::selection {
-    background-color: #6f11b0;
-    color: white;
-}
-
 /* Para navegadores basados en Webkit (Chrome, Safari) */
 /* Estilo general de la barra de scroll */
 .overflow-y-auto::-webkit-scrollbar,

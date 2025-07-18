@@ -202,7 +202,7 @@ export default function RegisterUser() {
             <button
               type='submit'
               disabled={loading}
-              className='flex-1 bg-purple-200 hover:bg-purple-300 text-purple-800 font-medium py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors cursor-pointer'
+              className='flex-1 bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors cursor-pointer'
             >
               {loading ? 'Procesando...' : 'Aceptar'}
             </button>

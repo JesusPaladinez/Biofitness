@@ -378,7 +378,7 @@ const UserDetails = () => {
                         {!isEditing ? (
                             <button
                                 onClick={handleStartEditing}
-                                className="flex items-center gap-2 bg-purple-200 hover:bg-purple-300 text-purple-800 px-4 py-2 rounded-md font-medium transition-colors cursor-pointer"
+                                className="flex items-center gap-2 bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded-md font-medium transition-colors cursor-pointer"
                             >
                                 Editar
                                 <MdEdit />
@@ -394,7 +394,7 @@ const UserDetails = () => {
                                 <button
                                     onClick={handleUpdate}
                                     disabled={loading}
-                                    className="bg-purple-200 hover:bg-purple-300 text-purple-800 px-6 py-2 rounded-md font-medium transition-colors disabled:opacity-50 cursor-pointer"
+                                    className="bg-blue-100 hover:bg-blue-200 text-blue-800 px-6 py-2 rounded-md font-medium transition-colors disabled:opacity-50 cursor-pointer"
                                 >
                                     {loading ? 'Actualizando...' : 'Actualizar'}
                                 </button>

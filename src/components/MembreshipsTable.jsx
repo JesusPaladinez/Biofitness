@@ -57,7 +57,7 @@ const MembreshipsTable = ({ data, states = [], selectedState = "todos", onStateC
                     {data.map((item) => (
                         <tr 
                             key={item.id_membership} 
-                            className="hover:bg-purple-50"
+                            className="hover:bg-gray-50"
                         >
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.id_membership}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.name_user}</td> 

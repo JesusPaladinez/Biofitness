@@ -18,7 +18,7 @@ const ManagersTable = ({ data, onDelete }) => {
                     {data.map((item) => (
                         <tr 
                             key={item.id_manager} 
-                            className="hover:bg-purple-50"
+                            className="hover:bg-gray-50"
                         >
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.id_manager}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.name_manager}</td> 

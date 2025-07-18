@@ -60,7 +60,7 @@ const ManagersList = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <button
-                        className="group bg-purple-200 text-purple-800 font-medium py-2 px-4 rounded-lg transition-colors cursor-pointer"
+                        className="group bg-blue-100 text-blue-800 font-medium py-2 px-4 rounded-lg transition-colors cursor-pointer"
                         onClick={() => navigate('/agregar-administrador')}
                     >
                         <span className="flex items-center gap-2">

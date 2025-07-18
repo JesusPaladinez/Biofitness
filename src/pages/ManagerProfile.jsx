@@ -222,7 +222,7 @@ export default function ManagerProfile() {
             {isEditing && (
               <div className="mt-4 flex flex-col gap-4">
                 <p
-                  className="text-purple-700 font-semibold cursor-pointer hover:underline w-fit"
+                  className="text-blue-700 font-semibold cursor-pointer hover:underline w-fit"
                   onClick={() => {
                     setShowPasswordFields(v => !v);
                     setPasswordError('');
@@ -278,7 +278,7 @@ export default function ManagerProfile() {
             {!isEditing ? (
               <button
                 onClick={handleStartEditing}
-                className="flex items-center gap-2 bg-purple-200 hover:bg-purple-300 text-purple-800 px-4 py-2 rounded-md font-medium transition-colors cursor-pointer"
+                className="flex items-center gap-2 bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded-md font-medium transition-colors cursor-pointer"
               >
                 Editar perfil
                 <MdEdit />
@@ -294,7 +294,7 @@ export default function ManagerProfile() {
                 <button
                   onClick={handleUpdate}
                   disabled={loading}
-                  className="bg-purple-200 hover:bg-purple-300 text-purple-800 px-6 py-2 rounded-md font-medium transition-colors disabled:opacity-50 cursor-pointer"
+                  className="bg-blue-100 hover:bg-blue-200 text-blue-800 px-6 py-2 rounded-md font-medium transition-colors disabled:opacity-50 cursor-pointer"
                 >
                   {loading ? 'Actualizando...' : 'Actualizar'}
                 </button>
