@@ -49,10 +49,10 @@ const Nav = () => {
     // Mostrar solo el logo en la página de login
     if (location.pathname === '/') {
       return (
-        <nav className="bg-[#20459e] w-full py-8 px-16">
+        <nav className="bg-black w-full py-8 px-16">
             <div className="container mx-auto flex items-center justify-between">
                 <img 
-                    src="/Logo Biofitness 2.jpg" 
+                    src="/Logo Biofitness 2.png" 
                     className='h-10 cursor-pointer'
                     onClick={handleHome}
                 />
@@ -63,10 +63,10 @@ const Nav = () => {
 
     // En las demás páginas, mostrar nombre y dropdown
     return (
-        <nav className="bg-[#20459e] w-full py-8 pl-18 pr-10">
+        <nav className="bg-black w-full py-8 pl-18 pr-10">
             <div className="container mx-auto flex items-center justify-between">
                 <img 
-                    src="/Logo Biofitness 2.jpg" 
+                    src="/Logo Biofitness 2.png" 
                     className='h-10 cursor-pointer'
                     onClick={handleHome}
                 />
