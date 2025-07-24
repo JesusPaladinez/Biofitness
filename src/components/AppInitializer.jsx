@@ -51,7 +51,7 @@ const LoadingSpinner = ({ message = "Cargando..." }) => (
     <div className="relative mb-6">
       {/* Logo o nombre de tu gym (opcional) */}
       <div className="text-2xl font-bold text-blue-600 mb-4 text-center">
-        OrchidGym
+        Biofitness
       </div>
       
       {/* Spinner animado */}
