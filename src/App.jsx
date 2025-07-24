@@ -10,8 +10,9 @@ import ManagersList from './pages/ManagersList'
 import ManagerProfile from './pages/ManagerProfile'
 import RegisterManager from './pages/RegisterManager'
 import RequireAuth from './components/RequireAuth'
+import AppInitializer from './components/AppInitializer' // Ajusta la ruta según tu estructura
 
-export default function App() {
+function MainApp() {
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
@@ -30,5 +31,13 @@ export default function App() {
         <Footer />
       </div>
     </Router>
+  )
+}
+
+export default function App() {
+  return (
+    <AppInitializer>
+      <MainApp />
+    </AppInitializer>
   )
 }
