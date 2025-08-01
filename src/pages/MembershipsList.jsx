@@ -52,7 +52,7 @@ const MembershipsList = () => {
                     <input
                         type="text"
                         placeholder="Buscar por nombre o teléfono..."
-                        className="w-80 px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300"
+                        className="w-80 px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />

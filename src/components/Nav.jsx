@@ -49,12 +49,15 @@ const Nav = () => {
     // Mostrar solo el logo en la página de login
     if (location.pathname === '/') {
       return (
-        <nav className="bg-black w-full py-8 px-16">
-            <div className="container mx-auto flex items-center justify-between">
+        <nav className="bg-black w-full py-8 px-16 flex justify-center">
+            <div className='flex items-center gap-3'>
+                <img 
+                    src="/Logo Biofitness 1.png" 
+                    className='h-10'
+                />
                 <img 
                     src="/Logo Biofitness 2.png" 
-                    className='h-10 cursor-pointer'
-                    onClick={handleHome}
+                    className='h-10'
                 />
             </div>
         </nav>
@@ -65,11 +68,16 @@ const Nav = () => {
     return (
         <nav className="bg-black w-full py-8 pl-18 pr-10">
             <div className="container mx-auto flex items-center justify-between">
-                <img 
-                    src="/Logo Biofitness 2.png" 
-                    className='h-10 cursor-pointer'
-                    onClick={handleHome}
-                />
+                <div className='flex items-center gap-3 cursor-pointer' onClick={handleHome}>
+                    <img 
+                        src="/Logo Biofitness 1.png" 
+                        className='h-10'
+                    />
+                    <img 
+                        src="/Logo Biofitness 2.png" 
+                        className='h-10'
+                    />
+                </div>
                 <div className='flex items-center gap-10 relative'>
                     <p 
                         className='text-white text-2xl font-medium cursor-pointer' 

@@ -230,7 +230,7 @@ const UserDetails = () => {
                                     name="name_user"
                                     value={formData.name_user}
                                     onChange={handleInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
                                 />
                             ) : (
                                 <div className="px-3 py-2 bg-gray-50 rounded-md">
@@ -250,7 +250,7 @@ const UserDetails = () => {
                                     name="phone"
                                     value={formData.phone}
                                     onChange={handleInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
                                     placeholder="10 dígitos"
                                 />
                             ) : (
@@ -271,7 +271,7 @@ const UserDetails = () => {
                                         name="id_plan"
                                         value={formData.id_plan || ''}
                                         onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300 appearance-none cursor-pointer"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100 appearance-none cursor-pointer"
                                     >
                                         {plans.map(plan => (
                                             <option key={plan.id_plan} value={plan.id_plan.toString()}>
@@ -303,7 +303,7 @@ const UserDetails = () => {
                                         name="id_method"
                                         value={formData.id_method || ''}
                                         onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300 appearance-none cursor-pointer"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100 appearance-none cursor-pointer"
                                     >
                                         {paymentMethods.map(method => (
                                             <option key={method.id_method} value={method.id_method.toString()}>
@@ -329,7 +329,7 @@ const UserDetails = () => {
                                     name="receipt_number"
                                     value={formData.receipt_number}
                                     onChange={handleInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
                                     required
                                 />
                             </div>

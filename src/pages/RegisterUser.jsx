@@ -97,7 +97,7 @@ export default function RegisterUser() {
               name='name_user'
               value={formData.name_user}
               onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
             />
           </div>
@@ -112,7 +112,7 @@ export default function RegisterUser() {
               name='phone'
               value={formData.phone}
               onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
             />
           </div>
@@ -127,7 +127,7 @@ export default function RegisterUser() {
                 name='id_plan'
                 value={formData.id_plan}
                 onChange={handleInputChange}
-                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300 appearance-none cursor-pointer'
+                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100 appearance-none cursor-pointer'
                 required
               >
                 <option value='' className='text-gray-500'>Seleccione el plan de días</option>
@@ -151,7 +151,7 @@ export default function RegisterUser() {
                 name='id_method'
                 value={formData.id_method}
                 onChange={handleInputChange}
-                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300 appearance-none cursor-pointer'
+                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100 appearance-none cursor-pointer'
                 required
               >
                 <option value='' className='text-gray-500'>Seleccione el método de pago</option>
@@ -175,7 +175,7 @@ export default function RegisterUser() {
               name='receipt_number'
               value={formData.receipt_number}
               onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
             />
           </div>
@@ -185,7 +185,7 @@ export default function RegisterUser() {
               <label className='block font-medium text-gray-700 text-sm mb-2'>
                 Total a pagar
               </label>
-              <p className='w-full text-lg font-semibold text-purple-800'>
+              <p className='w-full text-lg font-semibold text-blue-600'>
                 ${selectedPlan.price.toLocaleString('es-CO')}
               </p>
             </div>

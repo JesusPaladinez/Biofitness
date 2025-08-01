@@ -103,7 +103,7 @@ export default function RegisterManager() {
               name='name_manager'
               value={formData.name_manager}
               onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
               maxLength={40}
             />
@@ -119,7 +119,7 @@ export default function RegisterManager() {
               name='phone'
               value={formData.phone}
               onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
               maxLength={10}
             />
@@ -135,7 +135,7 @@ export default function RegisterManager() {
               name='email'
               value={formData.email}
               onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
               maxLength={50}
             />
@@ -151,7 +151,7 @@ export default function RegisterManager() {
               name='password'
               value={formData.password}
               onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
               minLength={6}
             />
@@ -167,7 +167,7 @@ export default function RegisterManager() {
               name='confirmPassword'
               value={formData.confirmPassword}
               onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
               minLength={6}
             />

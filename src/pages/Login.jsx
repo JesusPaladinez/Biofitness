@@ -65,7 +65,7 @@ export default function Login() {
                 name='name_manager'
                 value={formData.name_manager}
                 onChange={handleInputChange}
-                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300 appearance-none cursor-pointer'
+                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100 appearance-none cursor-pointer'
                 required
               >
                 <option value='' className='text-gray-500'>Seleccione el administrador</option>
@@ -86,7 +86,7 @@ export default function Login() {
               name='password'
               value={formData.password}
               onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-300'
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
             />
           </div>

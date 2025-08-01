@@ -183,7 +183,7 @@ export default function ManagerProfile() {
                   name="name_manager"
                   value={formData.name_manager}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
                 />
               ) : (
                 <div className="px-3 py-2 bg-gray-50 rounded-md">{manager.name_manager}</div>
@@ -197,7 +197,7 @@ export default function ManagerProfile() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
                   placeholder="10 dígitos"
                 />
               ) : (
@@ -212,7 +212,7 @@ export default function ManagerProfile() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
                 />
               ) : (
                 <div className="px-3 py-2 bg-gray-50 rounded-md">{manager.email}</div>
@@ -240,7 +240,7 @@ export default function ManagerProfile() {
                         name="current"
                         value={passwordData.current}
                         onChange={handlePasswordChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
                         autoComplete="current-password"
                       />
                     </div>
@@ -251,7 +251,7 @@ export default function ManagerProfile() {
                         name="new"
                         value={passwordData.new}
                         onChange={handlePasswordChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
                         autoComplete="new-password"
                       />
                     </div>
@@ -262,7 +262,7 @@ export default function ManagerProfile() {
                         name="confirm"
                         value={passwordData.confirm}
                         onChange={handlePasswordChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-300"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
                         autoComplete="new-password"
                       />
                     </div>
