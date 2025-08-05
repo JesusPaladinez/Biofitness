@@ -133,7 +133,7 @@ export default function RegisterUser() {
                 <option value='' className='text-gray-500'>Seleccione el plan de días</option>
                 {plans.map(plan => (
                   <option key={plan.id_plan} value={plan.id_plan}>
-                    {plan.days_duration} {plan.days_duration === 1 ? 'día' : 'días'}
+                    {plan.days_duration} {plan.days_duration === 1 ? 'día' : 'días'} - {plan.plan_description}
                   </option>
                 ))}
               </select>
