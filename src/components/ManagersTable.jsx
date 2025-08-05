@@ -15,12 +15,12 @@ const ManagersTable = ({ data, onDelete }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item) => (
+                    {data.map((item, index) => (
                         <tr 
                             key={item.id_manager} 
                             className="hover:bg-gray-50"
                         >
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.id_manager}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{index + 1}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.name_manager}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.phone}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.email}</td> 

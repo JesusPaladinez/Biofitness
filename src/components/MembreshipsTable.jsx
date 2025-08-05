@@ -54,12 +54,12 @@ const MembreshipsTable = ({ data, states = [], selectedState = "todos", onStateC
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item) => (
+                    {data.map((item, index) => (
                         <tr 
                             key={item.id_membership} 
                             className="hover:bg-gray-50"
                         >
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.id_membership}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{index + 1}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.name_user}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.user_phone}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.user_created_at}</td> 

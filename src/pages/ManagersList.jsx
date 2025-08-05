@@ -49,25 +49,46 @@ const ManagersList = () => {
 
     return (
         <div className="container mx-auto px-8 py-10">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Lista de Administradores</h1>
-                <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <h1 className="text-2xl lg:text-3xl font-bold">Lista de Administradores</h1>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                    <div className="flex items-center gap-3 sm:hidden">
+                        <button
+                            className="group bg-blue-100 text-blue-800 font-medium py-2 px-3 rounded-lg transition-colors cursor-pointer"
+                            onClick={() => navigate('/agregar-administrador')}
+                        >
+                            <span className="flex items-center">
+                                <FaPlus className="text-lg" />
+                            </span>
+                        </button>
+                    </div>
+                    <div className="hidden sm:flex items-center gap-4">
+                        <input
+                            type="text"
+                            placeholder="Buscar por nombre, teléfono o email..."
+                            className="w-64 lg:w-80 px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <button
+                            className="group bg-blue-100 text-blue-800 font-medium py-2 px-4 rounded-lg transition-colors cursor-pointer"
+                            onClick={() => navigate('/agregar-administrador')}
+                        >
+                            <span className="flex items-center gap-2">
+                                Agregar
+                                <FaPlus className="hidden group-hover:inline" />
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div className="w-full sm:hidden">
                     <input
                         type="text"
                         placeholder="Buscar por nombre, teléfono o email..."
-                        className="w-80 px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100"
+                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <button
-                        className="group bg-blue-100 text-blue-800 font-medium py-2 px-4 rounded-lg transition-colors cursor-pointer"
-                        onClick={() => navigate('/agregar-administrador')}
-                    >
-                        <span className="flex items-center gap-2">
-                            Agregar
-                            <FaPlus className="hidden group-hover:inline" />
-                        </span>
-                    </button>
                 </div>
             </div>
             {loading ? (

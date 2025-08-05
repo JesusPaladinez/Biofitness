@@ -48,8 +48,8 @@ export default function Login() {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center min-h-[75vh] p-4'>
-      <div className='bg-white p-8 rounded-2xl border-1 border-gray-300 w-full max-w-md'>
+    <div className='flex flex-col items-center justify-center min-h-[60vh] md:min-h-[75vh] p-4'>
+      <div className='bg-white p-6 md:p-8 rounded-2xl border-1 border-gray-300 w-full max-w-md'>
         <h2 className='text-2xl font-semibold text-center mb-6 text-black'>Iniciar sesión</h2>
         {error && (
           <div className='mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded'>

@@ -66,28 +66,28 @@ const Nav = () => {
 
     // En las demás páginas, mostrar nombre y dropdown
     return (
-        <nav className="bg-black w-full py-8 pl-18 pr-10">
+        <nav className="bg-black w-full py-4 px-4 md:py-8 md:pl-18 md:pr-10">
             <div className="container mx-auto flex items-center justify-between">
-                <div className='flex items-center gap-3 cursor-pointer' onClick={handleHome}>
+                <div className='flex items-center gap-2 md:gap-3 cursor-pointer' onClick={handleHome}>
                     <img 
                         src="/Logo Biofitness 1.png" 
-                        className='h-10'
+                        className='h-8 md:h-10'
                     />
                     <img 
                         src="/Logo Biofitness 2.png" 
-                        className='h-10'
+                        className='h-8 md:h-10'
                     />
                 </div>
-                <div className='flex items-center gap-10 relative'>
+                <div className='flex items-center gap-4 md:gap-10 relative'>
                     <p 
-                        className='text-white text-2xl font-medium cursor-pointer' 
+                        className='hidden md:block text-white text-lg md:text-2xl font-medium cursor-pointer' 
                         onClick={handleProfile}
                     >
                         {managerName}
                     </p>
                     <div>
                         <CgMenuRight
-                            className='text-white text-2xl cursor-pointer'
+                            className='text-white text-xl md:text-2xl cursor-pointer'
                             onClick={() => setMenuOpen((open) => !open)}
                         />
                         <Dropdown open={menuOpen} onClose={() => setMenuOpen(false)}>

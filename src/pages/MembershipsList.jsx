@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import MembreshipsTable from '../components/MembreshipsTable';
+import ButtonExportToExcel from '../components/ButtonExportToExcel';
 import { FiChevronRight } from "react-icons/fi";
+import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { membershipService } from '../services/membershipService';
 
@@ -35,6 +37,8 @@ const MembershipsList = () => {
         fetchMemberships();
     }, []);
 
+
+
     // Extrae los estados únicos de los datos de membresía
     const uniqueStates = [
         ...new Set(memberships.map(m => m.name_state).filter(Boolean))
@@ -46,25 +50,56 @@ const MembershipsList = () => {
 
     return (
         <div className="container mx-auto px-8 py-10">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Control de Membresías</h1>
-                <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <h1 className="text-2xl lg:text-3xl font-bold">Control de Membresías</h1>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                    <div className="flex items-center gap-3 sm:hidden">
+                        <ButtonExportToExcel 
+                            searchTerm={searchTerm}
+                            selectedState={selectedState}
+                            selectedPlan={selectedPlan}
+                        />
+                        <button
+                            className="group bg-blue-100 text-blue-800 font-medium py-2 px-3 rounded-lg transition-colors cursor-pointer"
+                            onClick={() => navigate('/inscribir-usuario')}
+                        >
+                            <span className="flex items-center">
+                                <FaPlus className="text-lg" />
+                            </span>
+                        </button>
+                    </div>
+                    <div className="hidden sm:flex items-center gap-4">
+                        <input
+                            type="text"
+                            placeholder="Buscar por nombre o teléfono..."
+                            className="w-64 lg:w-80 px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <ButtonExportToExcel 
+                            searchTerm={searchTerm}
+                            selectedState={selectedState}
+                            selectedPlan={selectedPlan}
+                        />
+                        <button
+                            className="group bg-blue-100 text-blue-800 font-medium py-2 px-4 rounded-lg transition-colors cursor-pointer"
+                            onClick={() => navigate('/inscribir-usuario')}
+                        >
+                            <span className="flex items-center gap-1">
+                                Inscribir
+                                <FiChevronRight className="hidden group-hover:inline text-xl" />
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div className="w-full sm:hidden">
                     <input
                         type="text"
                         placeholder="Buscar por nombre o teléfono..."
-                        className="w-80 px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100"
+                        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <button
-                        className="group bg-blue-100 text-blue-800 font-medium py-2 px-4 rounded-lg transition-colors cursor-pointer"
-                        onClick={() => navigate('/inscribir-usuario')}
-                    >
-                        <span className="flex items-center gap-1">
-                            Inscribir
-                            <FiChevronRight className="hidden group-hover:inline text-xl" />
-                        </span>
-                    </button>
                 </div>
             </div>
             {loading ? (
