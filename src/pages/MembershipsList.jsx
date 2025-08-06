@@ -50,9 +50,9 @@ const MembershipsList = () => {
 
     return (
         <div className="container mx-auto px-8 py-10">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <div className="flex justify-between items-center gap-4 mb-6">
                 <h1 className="text-2xl lg:text-3xl font-bold">Control de Membresías</h1>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                <div className="flex items-center gap-3">
                     <div className="flex items-center gap-3 sm:hidden">
                         <ButtonExportToExcel 
                             searchTerm={searchTerm}
