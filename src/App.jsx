@@ -10,12 +10,12 @@ import ManagersList from './pages/ManagersList'
 import ManagerProfile from './pages/ManagerProfile'
 import RegisterManager from './pages/RegisterManager'
 import RequireAuth from './components/RequireAuth'
-import AppInitializer from './components/AppInitializer' // Ajusta la ruta según tu estructura
+import AppInitializer from './components/AppInitializer' 
 
 function MainApp() {
   return (
     <Router>
-      <div className="flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <Nav />
         <main className="flex-1">
           <Routes>
