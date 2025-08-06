@@ -52,7 +52,7 @@ const MembershipsList = () => {
         <div className="container mx-auto px-8 py-10">
             <div className="mb-6">
                 <div className="flex justify-between items-center gap-4 mb-4">
-                    <h1 className="text-2xl lg:text-3xl font-bold">Control de Membresías</h1>
+                    <h1 className="text-3xl font-bold">Control de Membresías</h1>
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-3 sm:hidden">
                             <ButtonExportToExcel 

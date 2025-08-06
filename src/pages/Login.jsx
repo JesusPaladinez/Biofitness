@@ -48,7 +48,7 @@ export default function Login() {
   };
 
   return (
-    <div className='h-full flex items-center justify-center p-4'>
+    <div className='flex-1 flex items-center justify-center p-4'>
       <div className='bg-white p-6 md:p-8 rounded-2xl border border-gray-300 w-full max-w-md'>
         <h2 className='text-2xl font-semibold text-center mb-6 text-black'>Iniciar sesión</h2>
         {error && (

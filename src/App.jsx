@@ -15,9 +15,9 @@ import AppInitializer from './components/AppInitializer'
 function MainApp() {
   return (
     <Router>
-      <div className="h-screen flex flex-col overflow-hidden">
-        <Nav />
-        <main className="flex-1 overflow-auto">
+      <div className="h-screen flex flex-col">
+        <Nav className="flex-shrink-0" />
+        <main className="flex-1 flex flex-col min-h-0">
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/membresias" element={<RequireAuth><MembershipsList /></RequireAuth>} />
@@ -28,7 +28,7 @@ function MainApp() {
             <Route path="/agregar-administrador" element={<RequireAuth><RegisterManager /></RequireAuth>} />
           </Routes>
         </main>
-        <Footer />
+        <Footer className="flex-shrink-0" />
       </div>
     </Router>
   )
