@@ -15,9 +15,9 @@ import AppInitializer from './components/AppInitializer'
 function MainApp() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
+      <div className="h-screen flex flex-col overflow-hidden">
         <Nav />
-        <main className="flex-1">
+        <main className="flex-1 overflow-auto">
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/membresias" element={<RequireAuth><MembershipsList /></RequireAuth>} />
