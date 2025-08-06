@@ -15,7 +15,7 @@ import AppInitializer from './components/AppInitializer' // Ajusta la ruta segú
 function MainApp() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
+      <div className="flex flex-col">
         <Nav />
         <main className="flex-1">
           <Routes>
