@@ -17,8 +17,8 @@ function MainApp() {
     <Router>
       <div className="min-h-screen flex flex-col">
         <Nav className="flex-shrink-0" />
-        <main className="flex-">
-          <Routes>
+        <main className="flex-1 flex flex-col">
+          <Routes>  
             <Route path="/" element={<Login />} />
             <Route path="/membresias" element={<RequireAuth><MembershipsList /></RequireAuth>} />
             <Route path="/inscribir-usuario" element={<RequireAuth><RegisterUser /></RequireAuth>} />
