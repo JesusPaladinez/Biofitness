@@ -71,7 +71,7 @@ const LoadingSpinner = ({ message = "Cargando..." }) => (
       </div>
       
       <p className="text-sm text-gray-500">
-        Esto puede tomar unos segundos en la primera carga
+        Esto puede tomar unos segundos
       </p>
       
       {/* Barra de progreso simulada */}
