@@ -1,12 +1,12 @@
 import axios from "axios";
 
-// Detectar si está en desarrollo o producción
-const isDevelopment = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV;
+// URL base desde variable de entorno (Vite usa prefijo VITE_)
+const baseURL = typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL;
 
-// URL base condicional
-const baseURL = isDevelopment 
-  ? "http://localhost:3000/api"  
-  : "https://backendorchidgym.onrender.com/api"; 
+// Validar que la variable de entorno esté definida
+if (!baseURL) {
+  throw new Error('VITE_API_BASE_URL debe estar definida en las variables de entorno');
+}
 
 // Crear instancia de axios con configuración optimizada
 const api = axios.create({
@@ -26,11 +26,6 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     
-    // Log para debugging (solo en desarrollo)
-    if (isDevelopment) {
-      console.log(`🚀 API Request: ${config.method?.toUpperCase()} ${config.url}`);
-    }
-    
     return config;
   },
   (error) => {
@@ -41,10 +36,7 @@ api.interceptors.request.use(
 // Interceptor para responses con retry automático
 api.interceptors.response.use(
   (response) => {
-    // Log para debugging (solo en desarrollo)
-    if (isDevelopment) {
-      console.log(`✅ API Response: ${response.config.method?.toUpperCase()} ${response.config.url} - ${response.status}`);
-    }
+
     return response;
   },
   async (error) => {
@@ -60,8 +52,6 @@ api.interceptors.response.use(
     ) {
       originalRequest._isRetry = true;
       originalRequest._retryCount = (originalRequest._retryCount || 0) + 1;
-      
-      console.log(`🔄 Reintentando request (${originalRequest._retryCount}/2): ${originalRequest.url}`);
       
       // Esperar antes del retry (backoff exponencial)
       const delay = originalRequest._retryCount * 2000;
@@ -98,15 +88,15 @@ export const healthCheck = () => api.get('/health-check', { skipAuth: true, time
 
 // Función para hacer warm-up del backend
 export const warmupBackend = async () => {
-  if (isDevelopment) return true;
+  if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) return true;
   
   try {
-    console.log("🔥 Haciendo warm-up del backend...");
+
     await healthCheck();
-    console.log("✅ Backend listo!");
+
     return true;
   } catch (error) {
-    console.warn("⚠️ Warm-up falló:", error.message);
+
     return false;
   }
 };
@@ -122,7 +112,7 @@ export const apiWithLoading = {
       return response;
     } catch (error) {
       if (showError) {
-        console.error('Request failed:', error);
+
         // Aquí podrías agregar una notificación toast si tienes una librería
       }
       throw error;
