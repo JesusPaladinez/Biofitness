@@ -4,6 +4,8 @@ import { userService } from '../services/userService';
 import { planService } from '../services/planService';
 import { paymentMethodService } from '../services/paymentMethodService';
 import { FaCaretDown } from "react-icons/fa";
+import toast from 'react-hot-toast';
+import ToasterAlert from '../components/ToasterAlert';
 
 export default function RegisterUser() {
   const navigate = useNavigate();
@@ -12,16 +14,26 @@ export default function RegisterUser() {
     phone: '',
     id_plan: '',
     id_method: '',
-    receipt_number: '',
-    registration_date: '',  // Nueva fecha de inscripción
-    last_payment_date: ''   // Nueva fecha de último pago
+    receipt_number: ''
   });
   const [plans, setPlans] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [manager, setManager] = useState(null);
+  const [amountToPay, setAmountToPay] = useState('');
+  const [isAmountModified, setIsAmountModified] = useState(false);
+
+  // Helpers para que solo haya un toast visible a la vez
+  const showErrorToast = (message) => {
+    toast.dismiss();
+    toast.error(message);
+  };
+
+  const showSuccessToast = (message) => {
+    toast.dismiss();
+    toast.success(message);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +45,7 @@ export default function RegisterUser() {
         setPlans(plansData);
         setPaymentMethods(methodsData);
       } catch (err) {
-        setError('Error al cargar los datos');
+        showErrorToast('Error al cargar los datos');
       }
     };
     fetchData();
@@ -48,8 +60,18 @@ export default function RegisterUser() {
     if (formData.id_plan) {
       const plan = plans.find(p => p.id_plan === parseInt(formData.id_plan));
       setSelectedPlan(plan);
+      // Autocompletar con el precio del plan al seleccionar
+      if (plan) {
+        setAmountToPay(String(plan.price));
+        setIsAmountModified(false); // Resetear porque se autocompleta
+      } else {
+        setAmountToPay('');
+        setIsAmountModified(false);
+      }
     } else {
       setSelectedPlan(null);
+      setAmountToPay('');
+      setIsAmountModified(false);
     }
   }, [formData.id_plan, plans]);
 
@@ -64,16 +86,19 @@ export default function RegisterUser() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
     try {
+      const planPrice = selectedPlan ? selectedPlan.price : 0;
+      const pay = Math.max(0, Math.min(parseInt(amountToPay || '0', 10), planPrice));
       await userService.createUserWithMembership({
         ...formData,
-        id_manager: manager?.id_manager 
+        id_manager: manager?.id_manager,
+        pay
       });
+      showSuccessToast('Usuario registrado exitosamente');
       navigate('/membresias');
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Error al crear la inscripción';
-      setError(errorMessage);
+      showErrorToast(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -81,13 +106,9 @@ export default function RegisterUser() {
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen p-4'>
+      <ToasterAlert />
       <div className='bg-white p-8 rounded-2xl border-1 border-gray-300 w-full max-w-md'>
         <h2 className='text-2xl font-semibold text-center mb-6 text-black'>Inscripción de Usuario</h2>
-        {error && (
-          <div className='mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded'>
-            {error}
-          </div>
-        )}
         <form className='space-y-4' onSubmit={handleSubmit}>
           <div>
             <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='name_user'>
@@ -182,44 +203,57 @@ export default function RegisterUser() {
             />
           </div>
 
-          <div>
-            <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='registration_date'>
-              Fecha de Inscripción
-            </label>
-            <input
-              type='date'
-              id='registration_date'
-              name='registration_date'
-              value={formData.registration_date}
-              onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
-            />
-            <p className='text-xs text-gray-500 mt-1'>Dejar vacío para usar fecha actual</p>
-          </div>
-
-          <div>
-            <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='last_payment_date'>
-              Fecha de Último Pago
-            </label>
-            <input
-              type='date'
-              id='last_payment_date'
-              name='last_payment_date'
-              value={formData.last_payment_date}
-              onChange={handleInputChange}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
-            />
-            <p className='text-xs text-gray-500 mt-1'>Dejar vacío para usar fecha actual</p>
-          </div>
-
           {selectedPlan && (
             <div>
               <label className='block font-medium text-gray-700 text-sm mb-2'>
                 Total a pagar
               </label>
-              <p className='w-full text-lg font-semibold text-blue-600'>
-                ${selectedPlan.price.toLocaleString('es-CO')}
-              </p>
+              <input
+                type='number'
+                // inputMode='numeric'
+                min={0}
+                max={selectedPlan.price}
+                step={100}
+                value={amountToPay}
+                onChange={(e) => {
+                  const raw = e.target.value;
+                  // Marcar como modificado cuando el usuario cambia el valor
+                  setIsAmountModified(true);
+                  // permitir vacío temporalmente
+                  if (raw === '') { setAmountToPay(''); return; }
+                  const val = parseInt(raw, 10);
+                  if (isNaN(val)) return;
+                  if (val > selectedPlan.price) {
+                    showErrorToast('El total a pagar no puede ser mayor al precio del plan');
+                    setAmountToPay(String(selectedPlan.price));
+                  } else if (val < 0) {
+                    setAmountToPay('0');
+                  } else {
+                    setAmountToPay(String(val));
+                  }
+                }}
+                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
+              />
+              {isAmountModified && (
+                <div className='mt-4'>
+                  <p className='text-xs text-gray-700'>
+                    Precio del plan: ${selectedPlan.price.toLocaleString('es-CO')}
+                  </p>
+                  {(() => {
+                    const t = new Date();
+                    t.setDate(t.getDate() + 1);
+                    const dd = String(t.getDate()).padStart(2, '0');
+                    const mm = String(t.getMonth() + 1).padStart(2, '0');
+                    const yyyy = t.getFullYear();
+                    const tomorrowStr = `${dd}/${mm}/${yyyy}`;
+                    return (
+                      <p className='mt-2 text-xs text-gray-700'>
+                        Plazo máximo para pagar, el día de mañana {tomorrowStr}
+                      </p>
+                    );
+                  })()}
+                </div>
+              )}
             </div>
           )}
 
