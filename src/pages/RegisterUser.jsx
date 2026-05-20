@@ -297,7 +297,67 @@ export default function RegisterUser() {
               className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
             />
-          </div>
+          </div> 
+
+          {selectedPlan && (
+            <div>
+              <label className='block font-medium text-gray-700 text-sm mb-2'>
+                Total a pagar
+              </label>
+              {selectedPlan.days_duration === 1 ? (
+                <p className='w-full py-1 text-gray-800'>
+                  ${selectedPlan.price.toLocaleString('es-CO')}
+                </p>
+              ) : (
+                <input
+                  type='number'
+                  min={0}
+                  max={selectedPlan.price}
+                  step={100}
+                  value={amountToPay}
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    setIsAmountModified(true);
+                    if (raw === '') { setAmountToPay(''); return; }
+                    const val = parseInt(raw, 10);
+                    if (isNaN(val)) return;
+                    if (val > selectedPlan.price) {
+                      singleToast.error('El total a pagar no puede ser mayor al precio del plan');
+                      setAmountToPay(String(selectedPlan.price));
+                    } else if (val < 0) {
+                      setAmountToPay('0');
+                    } else {
+                      setAmountToPay(String(val));
+                    }
+                  }}
+                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
+                />
+              )}
+              {selectedPlan.days_duration !== 1 && isAmountModified && (
+                <div className='mt-4'>
+                  <p className='text-xs text-gray-700'>
+                    Precio del plan: ${selectedPlan.price.toLocaleString('es-CO')}
+                  </p>
+                  <p className='mt-2 text-xs text-gray-700'>
+                    Queda debiendo: ${Math.max(0, selectedPlan.price - Math.max(0, Math.min(parseInt(amountToPay || '0', 10) || 0, selectedPlan.price))).toLocaleString('es-CO')}
+                  </p>
+                  {(() => {
+                    const t = new Date();
+                    t.setDate(t.getDate() + 1);
+                    const dd = String(t.getDate()).padStart(2, '0');
+                    const mm = String(t.getMonth() + 1).padStart(2, '0');
+                    const yyyy = t.getFullYear();
+                    const tomorrowStr = `${dd}/${mm}/${yyyy}`;
+                    return (
+                      <p className='mt-2 text-xs text-gray-700'>
+                        Plazo máximo para pagar, el día de mañana {tomorrowStr}
+                      </p>
+                    );
+                  })()}
+                </div>
+              )}
+            </div>
+          )}
 
           <div>
             <span className='block font-medium text-gray-700 text-sm mb-2' id='face-label'>
@@ -340,57 +400,6 @@ export default function RegisterUser() {
               </div>
             )}
           </div>
-
-          {selectedPlan && (
-            <div>
-              <label className='block font-medium text-gray-700 text-sm mb-2'>
-                Total a pagar
-              </label>
-              <input
-                type='number'
-                min={0}
-                max={selectedPlan.price}
-                step={100}
-                value={amountToPay}
-                onChange={(e) => {
-                  const raw = e.target.value;
-                  setIsAmountModified(true);
-                  if (raw === '') { setAmountToPay(''); return; }
-                  const val = parseInt(raw, 10);
-                  if (isNaN(val)) return;
-                  if (val > selectedPlan.price) {
-                    singleToast.error('El total a pagar no puede ser mayor al precio del plan');
-                    setAmountToPay(String(selectedPlan.price));
-                  } else if (val < 0) {
-                    setAmountToPay('0');
-                  } else {
-                    setAmountToPay(String(val));
-                  }
-                }}
-                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
-              />
-              {isAmountModified && (
-                <div className='mt-4'>
-                  <p className='text-xs text-gray-700'>
-                    Precio del plan: ${selectedPlan.price.toLocaleString('es-CO')}
-                  </p>
-                  {(() => {
-                    const t = new Date();
-                    t.setDate(t.getDate() + 1);
-                    const dd = String(t.getDate()).padStart(2, '0');
-                    const mm = String(t.getMonth() + 1).padStart(2, '0');
-                    const yyyy = t.getFullYear();
-                    const tomorrowStr = `${dd}/${mm}/${yyyy}`;
-                    return (
-                      <p className='mt-2 text-xs text-gray-700'>
-                        Plazo máximo para pagar, el día de mañana {tomorrowStr}
-                      </p>
-                    );
-                  })()}
-                </div>
-              )}
-            </div>
-          )}
 
           <div className='flex gap-4 mt-6'>
             <button

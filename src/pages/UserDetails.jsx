@@ -459,7 +459,7 @@ const UserDetails = () => {
                                         const planPrice = selectedPlan ? selectedPlan.price : 0;
                                         const payPreview = amountToPay === '' ? planPrice : Math.max(0, Math.min(parseInt(amountToPay || '0', 10) || 0, planPrice));
                                         const owePreview = Math.max(0, planPrice - payPreview);
-                                        return `Precio del plan: $${planPrice.toLocaleString('es-CO')} | Pagará: $${payPreview.toLocaleString('es-CO')} | Adeuda: $${owePreview.toLocaleString('es-CO')}`;
+                                        return `Precio del plan: $${planPrice.toLocaleString('es-CO')} | Pagó: $${payPreview.toLocaleString('es-CO')} | Debe: $${owePreview.toLocaleString('es-CO')}`;
                                     })()}
                                 </div>
                             </div>
@@ -528,7 +528,7 @@ const UserDetails = () => {
                                         <div className="text-sm">${(memberships[0].pay || 0).toLocaleString('es-CO')}</div>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Adeuda</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Debe</label>
                                         <div className="text-sm">${(memberships[0].owe || 0).toLocaleString('es-CO')}</div>
                                     </div>
                                     {memberships[0].name_state === 'Vencido' && (
