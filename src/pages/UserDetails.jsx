@@ -6,6 +6,10 @@ import { paymentMethodService } from '../services/paymentMethodService';
 import { MdEdit, MdDelete } from "react-icons/md";
 import { FiChevronLeft } from "react-icons/fi";
 import { FaCaretDown } from "react-icons/fa";
+import toast from 'react-hot-toast';
+import { singleToast } from '../utils/singleToast';
+import ToasterAlert from '../components/ToasterAlert';
+import { optimizeCloudinaryImage } from '../utils/cloudinaryImage';
 
 const UserDetails = () => {
     const { userId } = useParams();
@@ -18,15 +22,14 @@ const UserDetails = () => {
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [managers, setManagers] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
+    const [amountToPay, setAmountToPay] = useState('');
     const [formData, setFormData] = useState({
         name_user: '',
         phone: '',
         id_plan: '',
         id_method: '',
         id_manager: '',
-        receipt_number: '',
-        registration_date: '',  // Nueva fecha de inscripción
-        last_payment_date: ''   // Nueva fecha de último pago
+        receipt_number: ''
     });
 
     // Obtener manager logueado
@@ -66,10 +69,15 @@ const UserDetails = () => {
                     id_plan: matchingPlan ? matchingPlan.id_plan.toString() : '',
                     id_method: matchingMethod ? matchingMethod.id_method.toString() : '',
                     id_manager: latestMembership?.id_manager?.toString() || '',
-                    receipt_number: latestMembership?.receipt_number || '',
-                    registration_date: userData.created_at || '',
-                    last_payment_date: latestMembership?.last_payment || ''
+                    receipt_number: latestMembership?.receipt_number || ''
                 });
+                // Inicializar monto a pagar desde la membresía (o precio del plan)
+                if (matchingPlan) {
+                    const initialPay = (latestMembership && typeof latestMembership.pay === 'number') ? latestMembership.pay : matchingPlan.price;
+                    setAmountToPay(String(initialPay));
+                } else {
+                    setAmountToPay('');
+                }
             } catch (err) {
                 setError('Error al cargar los datos del usuario');
                 console.error(err);
@@ -98,12 +106,13 @@ const UserDetails = () => {
             id_plan: matchingPlan ? matchingPlan.id_plan.toString() : '',
             id_method: matchingMethod ? matchingMethod.id_method.toString() : '',
             id_manager: latestMembership?.id_manager?.toString() || '',
-            receipt_number: latestMembership?.receipt_number || '',
-            registration_date: user.created_at || '',
-            last_payment_date: latestMembership?.last_payment || ''
+            receipt_number: latestMembership?.receipt_number || ''
         };
         
         setFormData(formDataToSet);
+        // Prefijar amountToPay al entrar en edición
+        const initialPay = (latestMembership && typeof latestMembership.pay === 'number') ? latestMembership.pay : (matchingPlan ? matchingPlan.price : 0);
+        setAmountToPay(String(initialPay));
         setIsEditing(true);
     };
 
@@ -132,6 +141,8 @@ const UserDetails = () => {
             id_manager: latestMembership?.id_manager?.toString() || '',
             receipt_number: latestMembership?.receipt_number || ''
         });
+        const resetPay = (latestMembership && typeof latestMembership.pay === 'number') ? latestMembership.pay : (matchingPlan ? matchingPlan.price : 0);
+        setAmountToPay(String(resetPay));
     };
 
     const handleUpdate = async () => {
@@ -147,6 +158,21 @@ const UserDetails = () => {
             }
             
             // Solo enviar los campos que realmente necesitamos actualizar
+            // Validar pay contra el precio del plan
+            const selectedPlan = plans.find(p => p.id_plan.toString() === (formData.id_plan || ''));
+            const planPrice = selectedPlan ? selectedPlan.price : 0;
+            const parsedPay = amountToPay === '' ? planPrice : parseInt(amountToPay, 10);
+            if (isNaN(parsedPay) || parsedPay < 0) {
+                setError('El valor de pago es inválido');
+                setLoading(false);
+                return;
+            }
+            if (parsedPay > planPrice) {
+                setError('El pago no puede ser mayor al precio del plan');
+                setLoading(false);
+                return;
+            }
+
             const updateData = {
                 name_user: formData.name_user,
                 phone: formData.phone,
@@ -154,8 +180,7 @@ const UserDetails = () => {
                 id_method: formData.id_method,
                 receipt_number: formData.receipt_number,
                 id_manager: loggedManagerId,
-                registration_date: formData.registration_date || null,
-                last_payment_date: formData.last_payment_date || null
+                pay: parsedPay
             };
             
             const response = await userService.updateUserWithMembership(userId, updateData);
@@ -168,7 +193,7 @@ const UserDetails = () => {
             setUser(userData);
             setMemberships(membershipsData);
             setIsEditing(false);
-            alert('Usuario actualizado exitosamente');
+            singleToast.success('Usuario actualizado exitosamente');
         } catch (err) {
             console.error('=== ERROR DETAILS ===');
             console.error('Full error object:', err);
@@ -186,23 +211,54 @@ const UserDetails = () => {
     };
 
     const handleDelete = async () => {
-        const confirmMessage = '¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.';
-        
-        if (window.confirm(confirmMessage)) {
-            try {
-                setLoading(true);
-                setError(null);
-                
-                await userService.delete(userId);
-                
-                // Redireccionar a la lista de membresías después de eliminar
-                navigate('/membresias');
-            } catch (err) {
-                console.error('Error al eliminar usuario:', err);
-                const errorMessage = err.response?.data?.error || 'Error al eliminar el usuario';
-                setError(errorMessage);
-                setLoading(false);
-            }
+        singleToast.dismiss();
+        toast((t) => (
+            <div className="flex items-center gap-4 text-left">
+                <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+                    <span>¿Estás seguro de <b>eliminar este usuario</b>?</span>
+                    <span className="text-sm">Esta acción no se puede deshacer.</span>
+                </div>
+                <div className="flex gap-2 shrink-0">
+                    <button 
+                        onClick={() => {
+                            toast.dismiss(t.id);
+                            executeDelete();
+                        }}
+                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors cursor-pointer"
+                    >
+                        Eliminar
+                    </button>
+                    <button 
+                        onClick={() => toast.dismiss(t.id)}
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1.5 rounded text-sm font-medium transition-colors cursor-pointer"
+                    >
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        ), {
+            duration: 10000,
+            className: "bg-white border border-gray-200 rounded-lg shadow-lg !px-3 !py-2 min-w-[510px] max-w-[90vw]"
+        });
+    };
+
+    const executeDelete = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            
+            await userService.deleteUserWithMembership(userId);
+            
+            singleToast.success('Usuario eliminado exitosamente');
+            
+            // Redireccionar a la lista de membresías después de eliminar
+            navigate('/membresias');
+        } catch (err) {
+            console.error('Error al eliminar usuario:', err);
+            const errorMessage = err.response?.data?.error || 'Error al eliminar el usuario';
+            setError(errorMessage);
+            singleToast.error(errorMessage);
+            setLoading(false);
         }
     };
 
@@ -232,6 +288,7 @@ const UserDetails = () => {
 
     return (
         <div className="container mx-auto px-8 py-10">
+            <ToasterAlert />
             <div className="max-w-4xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold">Datos del Usuario</h1>
@@ -264,6 +321,25 @@ const UserDetails = () => {
                             ) : (
                                 <div className="px-3 py-2 bg-gray-50 rounded-md">
                                     {user.name_user}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Foto del rostro */}
+                        <div className="md:col-span-2">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Foto del rostro
+                            </label>
+                            {user.face ? (
+                                <img
+                                    src={optimizeCloudinaryImage(user.face, { width: 256 })}
+                                    alt="Rostro del usuario"
+                                    className="h-32 w-32 rounded-full object-cover border border-gray-200"
+                                    loading="lazy"
+                                />
+                            ) : (
+                                <div className="px-3 py-2 bg-gray-50 rounded-md text-sm text-gray-500">
+                                    Sin foto registrada
                                 </div>
                             )}
                         </div>
@@ -349,6 +425,46 @@ const UserDetails = () => {
                             )}
                         </div>
 
+                        {/* Total a pagar (editable) */}
+                        {isEditing && (
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Total a pagar</label>
+                                <input
+                                    type="number"
+                                    inputMode="numeric"
+                                    min={0}
+                                    step={100}
+                                    value={amountToPay}
+                                    onChange={(e) => {
+                                        const raw = e.target.value;
+                                        const selectedPlan = plans.find(p => p.id_plan.toString() === (formData.id_plan || ''));
+                                        const planPrice = selectedPlan ? selectedPlan.price : 0;
+                                        if (raw === '') { setAmountToPay(''); return; }
+                                        const val = parseInt(raw, 10);
+                                        if (isNaN(val)) return;
+                                        if (val > planPrice) {
+                                            singleToast.error('El total a pagar no puede ser mayor al precio del plan');
+                                            setAmountToPay(String(planPrice));
+                                        } else if (val < 0) {
+                                            setAmountToPay('0');
+                                        } else {
+                                            setAmountToPay(String(val));
+                                        }
+                                    }}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
+                                />
+                                <div className="mt-1 text-xs text-gray-600">
+                                    {(() => {
+                                        const selectedPlan = plans.find(p => p.id_plan.toString() === (formData.id_plan || ''));
+                                        const planPrice = selectedPlan ? selectedPlan.price : 0;
+                                        const payPreview = amountToPay === '' ? planPrice : Math.max(0, Math.min(parseInt(amountToPay || '0', 10) || 0, planPrice));
+                                        const owePreview = Math.max(0, planPrice - payPreview);
+                                        return `Precio del plan: $${planPrice.toLocaleString('es-CO')} | Pagará: $${payPreview.toLocaleString('es-CO')} | Adeuda: $${owePreview.toLocaleString('es-CO')}`;
+                                    })()}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Receipt Number */}
                         {isEditing && (
                             <div className="col-span-1 md:col-span-2">
@@ -364,38 +480,18 @@ const UserDetails = () => {
                             </div>
                         )}
 
-                        {/* Fecha de Inscripción */}
-                        {isEditing && (
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Fecha de Inscripción
-                                </label>
-                                <input
-                                    type="date"
-                                    name="registration_date"
-                                    value={formData.registration_date}
-                                    onChange={handleInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
-                                />
-                                <p className="text-xs text-gray-500 mt-1">Dejar vacío para mantener fecha actual</p>
-                            </div>
-                        )}
-
-                        {/* Fecha de Último Pago */}
-                        {isEditing && (
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Fecha de Último Pago
-                                </label>
-                                <input
-                                    type="date"
-                                    name="last_payment_date"
-                                    value={formData.last_payment_date}
-                                    onChange={handleInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-100"
-                                />
-                                <p className="text-xs text-gray-500 mt-1">Dejar vacío para usar fecha actual</p>
-                            </div>
+                        {/* Fechas mostradas solo en lectura según datos actuales */}
+                        {!isEditing && (
+                            <>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Fecha de Inscripción</label>
+                                    <div className="px-3 py-2 bg-gray-50 rounded-md">{user.created_at}</div>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Último Pago</label>
+                                    <div className="px-3 py-2 bg-gray-50 rounded-md">{memberships[0]?.last_payment || ''}</div>
+                                </div>
+                            </>
                         )}
                     </div>
 
@@ -422,6 +518,18 @@ const UserDetails = () => {
                                         }`}>
                                             {memberships[0].name_state}
                                         </span>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Precio del Plan</label>
+                                        <div className="text-sm">${(memberships[0].price || 0).toLocaleString('es-CO')}</div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Pagó</label>
+                                        <div className="text-sm">${(memberships[0].pay || 0).toLocaleString('es-CO')}</div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Adeuda</label>
+                                        <div className="text-sm">${(memberships[0].owe || 0).toLocaleString('es-CO')}</div>
                                     </div>
                                     {memberships[0].name_state === 'Vencido' && (
                                         <div>

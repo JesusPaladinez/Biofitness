@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { managerService } from '../services/managerService';
 import { FaCaretDown } from "react-icons/fa";
+import { singleToast } from '../utils/singleToast';
+import ToasterAlert from '../components/ToasterAlert';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -11,7 +13,6 @@ export default function Login() {
     password: ''
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchManagers = async () => {
@@ -19,7 +20,7 @@ export default function Login() {
         const data = await managerService.getAll();
         setManagers(data);
       } catch (err) {
-        setError('Error al cargar administradores');
+        singleToast.error('Error al cargar administradores');
       }
     };
     fetchManagers();
@@ -33,7 +34,6 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
     try {
       await managerService.login({
         name_manager: formData.name_manager,
@@ -41,7 +41,7 @@ export default function Login() {
       });
       navigate('/membresias');
     } catch (err) {
-      setError(err.response?.data?.error || 'Credenciales incorrectas');
+      singleToast.error(err.response?.data?.error || 'Credenciales incorrectas');
     } finally {
       setLoading(false);
     }
@@ -49,13 +49,9 @@ export default function Login() {
 
   return (
     <div className='flex-1 flex items-center justify-center p-4 min-h-0'>
+      <ToasterAlert />
       <div className='bg-white p-6 md:p-8 rounded-2xl border border-gray-300 w-full max-w-md'>
         <h2 className='text-2xl font-semibold text-center mb-6 text-black'>Iniciar sesión</h2>
-        {error && (
-          <div className='mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded'>
-            {error}
-          </div>
-        )}
         <form className='space-y-4' onSubmit={handleSubmit}>
           <div>
             <label className='block text-gray-500 text-sm mb-2' htmlFor='name_manager'>Administrador</label>
@@ -101,4 +97,4 @@ export default function Login() {
       </div>
     </div>
   );
-}
+} 

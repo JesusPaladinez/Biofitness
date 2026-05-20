@@ -3,6 +3,8 @@ import ManagersTable from '../components/ManagersTable';
 import { useNavigate } from 'react-router-dom';
 import { managerService } from '../services/managerService';
 import { FaPlus } from "react-icons/fa6";
+import { singleToast } from '../utils/singleToast';
+import ToasterAlert from '../components/ToasterAlert';
 
 const ManagersList = () => {
     const navigate = useNavigate();
@@ -37,11 +39,10 @@ const ManagersList = () => {
         if (window.confirm('¿Estás seguro de que deseas eliminar este administrador?')) {
             try {
                 await managerService.delete(managerId);
-                // Actualizar la lista después de eliminar
                 setManagers(managers.filter(manager => manager.id_manager !== managerId));
-                alert('Administrador eliminado exitosamente');
+                singleToast.success('Administrador eliminado exitosamente');
             } catch (err) {
-                setError('Error al eliminar el administrador');
+                singleToast.error('Error al eliminar el administrador');
                 console.error(err);
             }
         }
@@ -49,6 +50,7 @@ const ManagersList = () => {
 
     return (
         <div className="container mx-auto px-8 py-10">
+            <ToasterAlert />
             <div className="mb-6">
                 <div className="flex justify-between items-center gap-4 mb-4">
                     <h1 className="text-3xl font-bold">Lista de Administradores</h1>

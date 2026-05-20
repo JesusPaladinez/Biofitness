@@ -20,6 +20,13 @@ const api = axios.create({
 // Interceptor para requests
 api.interceptors.request.use(
   (config) => {
+    if (config.data instanceof FormData) {
+      if (config.headers?.delete) {
+        config.headers.delete("Content-Type");
+      } else {
+        delete config.headers["Content-Type"];
+      }
+    }
     // Usar el token de manager guardado en localStorage
     const token = localStorage.getItem("managerToken");
     if (token && !config.skipAuth) {
@@ -71,12 +78,13 @@ api.interceptors.response.use(
       }
     }
 
-    // Log de errores
+    // Log de errores (backend suele enviar error en .data.error o .data.message)
+    const serverMsg = error.response?.data?.error || error.response?.data?.message || error.message;
     console.error("❌ API Error:", {
       url: originalRequest?.url,
       method: originalRequest?.method,
       status: error.response?.status,
-      message: error.response?.data?.message || error.message
+      message: serverMsg
     });
 
     return Promise.reject(error);

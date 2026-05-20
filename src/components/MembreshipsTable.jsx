@@ -3,6 +3,15 @@ import { FaCaretDown } from "react-icons/fa6";
 import ButtonUserDetails from './ButtonUserDetails';
 
 const MembreshipsTable = ({ data, states = [], selectedState = "todos", onStateChange, plans = [], selectedPlan = "todos", onPlanChange }) => {
+    const formatDate = (dateStr) => {
+        if (!dateStr) return '';
+        const s = typeof dateStr === 'string' ? dateStr : String(dateStr);
+        const iso = s.split('T')[0];
+        const parts = iso.split('-');
+        if (parts.length !== 3) return s;
+        const [yyyy, mm, dd] = parts;
+        return `${dd.padStart(2, '0')}/${mm.padStart(2, '0')}/${yyyy}`;
+    };
     return (
         <div className="overflow-x-auto overflow-y-auto max-h-[500px] border-1 border-gray-300 rounded-2xl">
             <table className="min-w-full bg-white">
@@ -62,15 +71,15 @@ const MembreshipsTable = ({ data, states = [], selectedState = "todos", onStateC
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{data.length - index}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.name_user}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.user_phone}</td> 
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.user_created_at}</td> 
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.last_payment}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{formatDate(item.user_created_at)}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{formatDate(item.last_payment)}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.name_method}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.name_manager}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.receipt_number}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                                 {item.days_duration} {item.days_duration === 1 ? 'día' : 'días'}
                             </td> 
-                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{item.expiration_date}</td> 
+                            <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">{formatDate(item.expiration_date)}</td> 
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                                 <span className={`px-2 py-1 rounded ${item.name_state === 'Vigente' ? 'bg-green-100 text-green-800' :
                                     item.name_state === 'Por vencer' ? 'bg-yellow-100 text-yellow-800' :

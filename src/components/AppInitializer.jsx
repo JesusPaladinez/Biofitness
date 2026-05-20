@@ -4,41 +4,57 @@ import api from '../services/api' // Ajusta la ruta a tu archivo de API
 // Detectar si está en desarrollo
 const isDevelopment = process.env.NODE_ENV === 'development' || !process.env.NODE_ENV
 
-// Hook para el warm-up del backend
+const WARMUP_MAX_ATTEMPTS = 4
+const WARMUP_TIMEOUT_MS = 15000
+
+// Hook para el warm-up del backend (solo health-check; sin precargar datos pesados)
 const useBackendWarmup = () => {
-  const [isWarming, setIsWarming] = React.useState(false)
-  const [isReady, setIsReady] = React.useState(isDevelopment) // En desarrollo está listo inmediatamente
+  const [isWarming, setIsWarming] = React.useState(!isDevelopment)
+  const [isReady, setIsReady] = React.useState(isDevelopment)
 
   React.useEffect(() => {
-    // Solo hacer warm-up en producción
-    if (!isDevelopment) {
-      const warmupBackend = async () => {
-        setIsWarming(true)
-        console.log("🔥 Iniciando warm-up del backend...")
-        
+    if (isDevelopment) return
+
+    let cancelled = false
+
+    const warmupBackend = async () => {
+      setIsWarming(true)
+      console.log("🔥 Iniciando warm-up del backend...")
+
+      for (let attempt = 1; attempt <= WARMUP_MAX_ATTEMPTS; attempt++) {
         try {
-          // Intentar hacer ping al backend para despertarlo
-          await api.get('/health-check', { 
-            timeout: 30000,
-            // No usar token para este request
-            transformRequest: [(data, headers) => {
-              delete headers.Authorization
-              return data
-            }]
+          await api.get("/health-check", {
+            timeout: WARMUP_TIMEOUT_MS,
+            skipAuth: true,
           })
-          
-          console.log("✅ Backend listo!")
-          setIsReady(true)
+          if (!cancelled) {
+            console.log("✅ Backend listo!")
+            setIsReady(true)
+          }
+          return
         } catch (error) {
-          console.warn("⚠️ Warm-up falló, pero continuando...", error.message)
-          // Aún marcar como listo para no bloquear la app
-          setIsReady(true)
-        } finally {
-          setIsWarming(false)
+          console.warn(
+            `⚠️ Warm-up intento ${attempt}/${WARMUP_MAX_ATTEMPTS}:`,
+            error.message
+          )
+          if (attempt < WARMUP_MAX_ATTEMPTS) {
+            await new Promise((resolve) => setTimeout(resolve, attempt * 2000))
+          }
         }
       }
 
-      warmupBackend()
+      if (!cancelled) {
+        console.warn("⚠️ Warm-up falló; la app cargará y reintentará en cada vista.")
+        setIsReady(true)
+      }
+    }
+
+    warmupBackend().finally(() => {
+      if (!cancelled) setIsWarming(false)
+    })
+
+    return () => {
+      cancelled = true
     }
   }, [])
 
@@ -86,30 +102,6 @@ const LoadingSpinner = ({ message = "Cargando..." }) => (
 const AppInitializer = ({ children }) => {
   const { isWarming, isReady } = useBackendWarmup()
   const [showDetailedLoading, setShowDetailedLoading] = React.useState(false)
-  const [isPreloading, setIsPreloading] = React.useState(false)
-  const [preloadError, setPreloadError] = React.useState(null)
-
-  // Precarga de datos críticos
-  React.useEffect(() => {
-    if (isReady) {
-      setIsPreloading(true)
-      setPreloadError(null)
-      // Importar los servicios aquí para evitar dependencias circulares
-      import('../services/managerService').then(({ managerService }) => {
-        import('../services/membershipService').then(({ membershipService }) => {
-          Promise.all([
-            managerService.getAll().catch(() => null),
-            membershipService.getAllWithDetails().catch(() => null),
-          ]).then(() => {
-            setIsPreloading(false)
-          }).catch((err) => {
-            setPreloadError(err)
-            setIsPreloading(false)
-          })
-        })
-      })
-    }
-  }, [isReady])
 
   // Mostrar mensaje más detallado después de 3 segundos
   React.useEffect(() => {
@@ -138,25 +130,6 @@ const AppInitializer = ({ children }) => {
 
   if (!isReady) {
     return <LoadingSpinner message="Preparando aplicación..." />
-  }
-
-  if (isPreloading) {
-    return <LoadingSpinner message="Cargando información..." />
-  }
-
-  if (preloadError) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-red-50">
-        <h3 className="text-lg font-semibold text-red-700 mb-2">Error al cargar datos críticos</h3>
-        <p className="text-gray-600 mb-4">{preloadError.message || 'Error desconocido'}</p>
-        <button
-          onClick={() => setIsPreloading(true) || setPreloadError(null)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Reintentar
-        </button>
-      </div>
-    )
   }
 
   return children

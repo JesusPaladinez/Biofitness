@@ -5,6 +5,7 @@ import { FiChevronRight } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { membershipService } from '../services/membershipService';
+import ToasterAlert from '../components/ToasterAlert';
 
 const MembershipsList = () => {
     const navigate = useNavigate();
@@ -50,6 +51,7 @@ const MembershipsList = () => {
 
     return (
         <div className="container mx-auto px-8 py-10">
+            <ToasterAlert />
             <div className="mb-6">
                 <div className="flex justify-between items-center gap-4 mb-4">
                     <h1 className="text-3xl font-bold">Control de Membresías</h1>

@@ -77,16 +77,16 @@ export const userService = {
     }
   },
 
-  delete: async (id) => {
+  deleteUserWithMembership: async (id) => {
     try {
-      const response = await api.delete(`/users/${id}`);
+      const response = await api.delete(`/users/${id}/with-membership`);
       return response.data;
     } catch (error) {
       throw error;
     }
   },
 
-  // Crear usuario con membresía en una sola transacción
+  // Crear usuario con membresía en una sola transacción (JSON o FormData con foto opcional)
   createUserWithMembership: async (userData) => {
     try {
       const response = await api.post('/users/with-membership', userData);

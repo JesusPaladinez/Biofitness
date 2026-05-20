@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userService } from '../services/userService';
 import { planService } from '../services/planService';
 import { paymentMethodService } from '../services/paymentMethodService';
 import { FaCaretDown } from "react-icons/fa";
-import toast from 'react-hot-toast';
+import { singleToast } from '../utils/singleToast';
 import ToasterAlert from '../components/ToasterAlert';
 
 export default function RegisterUser() {
   const navigate = useNavigate();
+  const captureInputRef = useRef(null);
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
+
   const [formData, setFormData] = useState({
     name_user: '',
     phone: '',
@@ -24,16 +28,9 @@ export default function RegisterUser() {
   const [amountToPay, setAmountToPay] = useState('');
   const [isAmountModified, setIsAmountModified] = useState(false);
 
-  // Helpers para que solo haya un toast visible a la vez
-  const showErrorToast = (message) => {
-    toast.dismiss();
-    toast.error(message);
-  };
-
-  const showSuccessToast = (message) => {
-    toast.dismiss();
-    toast.success(message);
-  };
+  const [faceFile, setFaceFile] = useState(null);
+  const [facePreview, setFacePreview] = useState(null);
+  const [webcamOpen, setWebcamOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,11 +42,10 @@ export default function RegisterUser() {
         setPlans(plansData);
         setPaymentMethods(methodsData);
       } catch (err) {
-        showErrorToast('Error al cargar los datos');
+        singleToast.error('Error al cargar los datos');
       }
     };
     fetchData();
-    // Obtener manager logueado
     const managerData = localStorage.getItem('managerData');
     if (managerData) {
       setManager(JSON.parse(managerData));
@@ -57,13 +53,18 @@ export default function RegisterUser() {
   }, []);
 
   useEffect(() => {
+    return () => {
+      if (facePreview) URL.revokeObjectURL(facePreview);
+    };
+  }, [facePreview]);
+
+  useEffect(() => {
     if (formData.id_plan) {
       const plan = plans.find(p => p.id_plan === parseInt(formData.id_plan));
       setSelectedPlan(plan);
-      // Autocompletar con el precio del plan al seleccionar
       if (plan) {
         setAmountToPay(String(plan.price));
-        setIsAmountModified(false); // Resetear porque se autocompleta
+        setIsAmountModified(false);
       } else {
         setAmountToPay('');
         setIsAmountModified(false);
@@ -75,6 +76,13 @@ export default function RegisterUser() {
     }
   }, [formData.id_plan, plans]);
 
+  useEffect(() => {
+    if (!webcamOpen || !videoRef.current || !streamRef.current) return;
+    const video = videoRef.current;
+    video.srcObject = streamRef.current;
+    video.play().catch(() => {});
+  }, [webcamOpen]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -83,22 +91,110 @@ export default function RegisterUser() {
     }));
   };
 
+  const setFaceFromFile = (file) => {
+    if (!file || !file.type.startsWith('image/')) {
+      singleToast.error('Selecciona un archivo de imagen');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      singleToast.error('La imagen no puede superar 5 MB');
+      return;
+    }
+    setFaceFile(file);
+    setFacePreview((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return URL.createObjectURL(file);
+    });
+  };
+
+  const handleCaptureFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) setFaceFromFile(file);
+    e.target.value = '';
+  };
+
+  const clearFace = () => {
+    setFaceFile(null);
+    setFacePreview((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return null;
+    });
+  };
+
+  const stopWebcam = () => {
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    setWebcamOpen(false);
+  };
+
+  const openWebcam = async () => {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      singleToast.error('Tu navegador no permite usar la cámara web desde aquí');
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' },
+        audio: false
+      });
+      streamRef.current = stream;
+      setWebcamOpen(true);
+    } catch {
+      singleToast.error('No se pudo acceder a la cámara');
+    }
+  };
+
+  const captureFromWebcam = () => {
+    const video = videoRef.current;
+    if (!video || video.videoWidth === 0) {
+      singleToast.error('Espera a que la cámara esté lista');
+      return;
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0);
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          singleToast.error('No se pudo capturar la imagen');
+          return;
+        }
+        const file = new File([blob], 'face.jpg', { type: 'image/jpeg' });
+        setFaceFromFile(file);
+        stopWebcam();
+      },
+      'image/jpeg',
+      0.92
+    );
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const planPrice = selectedPlan ? selectedPlan.price : 0;
       const pay = Math.max(0, Math.min(parseInt(amountToPay || '0', 10), planPrice));
-      await userService.createUserWithMembership({
-        ...formData,
-        id_manager: manager?.id_manager,
-        pay
-      });
-      showSuccessToast('Usuario registrado exitosamente');
+
+      const fd = new FormData();
+      fd.append('name_user', formData.name_user);
+      fd.append('phone', formData.phone);
+      fd.append('id_plan', String(formData.id_plan));
+      fd.append('id_method', String(formData.id_method));
+      fd.append('receipt_number', formData.receipt_number);
+      fd.append('id_manager', String(manager?.id_manager ?? ''));
+      fd.append('pay', String(pay));
+      if (faceFile) {
+        fd.append('face', faceFile);
+      }
+
+      await userService.createUserWithMembership(fd);
+      singleToast.success('Usuario registrado exitosamente');
       navigate('/membresias');
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Error al crear la inscripción';
-      showErrorToast(errorMessage);
+      singleToast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -203,6 +299,48 @@ export default function RegisterUser() {
             />
           </div>
 
+          <div>
+            <span className='block font-medium text-gray-700 text-sm mb-2' id='face-label'>
+              Foto del rostro 
+            </span>
+            <input
+              ref={captureInputRef}
+              type='file'
+              accept='image/*'
+              capture='user'
+              className='hidden'
+              aria-hidden
+              onChange={handleCaptureFileChange}
+            />
+            <div className='flex flex-wrap gap-2'>
+              <button
+                type='button'
+                onClick={openWebcam}
+                className='px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg text-sm font-medium transition-colors cursor-pointer'
+              >
+                Abrir cámara
+              </button>
+              {facePreview && (
+                <button
+                  type='button'
+                  onClick={clearFace}
+                  className='px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm cursor-pointer'
+                >
+                  Quitar foto
+                </button>
+              )}
+            </div>
+            {facePreview && (
+              <div className='mt-3'>
+                <img
+                  src={facePreview}
+                  alt='Vista previa del rostro'
+                  className='max-h-40 rounded-lg border border-gray-200 object-cover'
+                />
+              </div>
+            )}
+          </div>
+
           {selectedPlan && (
             <div>
               <label className='block font-medium text-gray-700 text-sm mb-2'>
@@ -210,21 +348,18 @@ export default function RegisterUser() {
               </label>
               <input
                 type='number'
-                // inputMode='numeric'
                 min={0}
                 max={selectedPlan.price}
                 step={100}
                 value={amountToPay}
                 onChange={(e) => {
                   const raw = e.target.value;
-                  // Marcar como modificado cuando el usuario cambia el valor
                   setIsAmountModified(true);
-                  // permitir vacío temporalmente
                   if (raw === '') { setAmountToPay(''); return; }
                   const val = parseInt(raw, 10);
                   if (isNaN(val)) return;
                   if (val > selectedPlan.price) {
-                    showErrorToast('El total a pagar no puede ser mayor al precio del plan');
+                    singleToast.error('El total a pagar no puede ser mayor al precio del plan');
                     setAmountToPay(String(selectedPlan.price));
                   } else if (val < 0) {
                     setAmountToPay('0');
@@ -275,6 +410,44 @@ export default function RegisterUser() {
           </div>
         </form>
       </div>
+
+      {webcamOpen && (
+        <div
+          className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4'
+          role='dialog'
+          aria-modal='true'
+          aria-labelledby='webcam-title'
+        >
+          <div className='bg-white rounded-xl p-4 max-w-lg w-full shadow-lg'>
+            <h3 id='webcam-title' className='text-lg font-semibold mb-3 text-gray-900'>
+              Cámara web
+            </h3>
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className='w-full rounded-lg bg-black aspect-video object-cover'
+            />
+            <div className='flex gap-2 mt-4 justify-end'>
+              <button
+                type='button'
+                onClick={stopWebcam}
+                className='px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm cursor-pointer'
+              >
+                Cancelar
+              </button>
+              <button
+                type='button'
+                onClick={captureFromWebcam}
+                className='px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-900 rounded-lg text-sm font-medium cursor-pointer'
+              >
+                Capturar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

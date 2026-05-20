@@ -3,6 +3,8 @@ import { managerService } from '../services/managerService';
 import { MdEdit } from "react-icons/md";
 import { FiChevronLeft } from "react-icons/fi";
 import { useNavigate } from 'react-router-dom';
+import { singleToast } from '../utils/singleToast';
+import ToasterAlert from '../components/ToasterAlert';
 
 export default function ManagerProfile() {
   const navigate = useNavigate();
@@ -108,7 +110,7 @@ export default function ManagerProfile() {
       setPasswordData({ current: '', new: '', confirm: '' });
       setPasswordError('');
       setPasswordSuccess('');
-      alert('Perfil actualizado exitosamente');
+      singleToast.success('Perfil actualizado exitosamente');
     } catch (err) {
       // Si el error es de contraseña, mostrarlo debajo del campo y no cerrar el form
       const backendError = err?.response?.data?.error || '';
@@ -160,6 +162,7 @@ export default function ManagerProfile() {
 
   return (
     <div className="container mx-auto px-8 py-10">
+      <ToasterAlert />
       <div className="max-w-2xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Perfil del Administrador</h1>
