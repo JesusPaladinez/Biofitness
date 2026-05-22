@@ -15,6 +15,8 @@ export default function RegisterUser() {
 
   const [formData, setFormData] = useState({
     name_user: '',
+    identification_type: 'CC',
+    identification_number: '',
     phone: '',
     id_plan: '',
     id_method: '',
@@ -179,6 +181,8 @@ export default function RegisterUser() {
 
       const fd = new FormData();
       fd.append('name_user', formData.name_user);
+      fd.append('identification_type', formData.identification_type);
+      fd.append('identification_number', formData.identification_number);
       fd.append('phone', formData.phone);
       fd.append('id_plan', String(formData.id_plan));
       fd.append('id_method', String(formData.id_method));
@@ -215,6 +219,43 @@ export default function RegisterUser() {
               id='name_user'
               name='name_user'
               value={formData.name_user}
+              onChange={handleInputChange}
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
+              required
+            />
+          </div>
+
+          <div>
+            <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='identification_type'>
+              Tipo de identificación
+            </label>
+            <div className="relative">
+              <select
+                id='identification_type'
+                name='identification_type'
+                value={formData.identification_type}
+                onChange={handleInputChange}
+                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100 appearance-none cursor-pointer'
+                required
+              >
+                <option value='CC'>CC</option>
+                <option value='TI'>TI</option>
+                <option value='CE'>CE</option>
+                <option value='PA'>PA</option>
+              </select>
+              <FaCaretDown className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
+            </div>
+          </div>
+
+          <div>
+            <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='identification_number'>
+              Número de identificación
+            </label>
+            <input
+              type='text'
+              id='identification_number'
+              name='identification_number'
+              value={formData.identification_number}
               onChange={handleInputChange}
               className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
