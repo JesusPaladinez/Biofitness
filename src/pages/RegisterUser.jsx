@@ -18,7 +18,9 @@ export default function RegisterUser() {
     phone: '',
     id_plan: '',
     id_method: '',
-    receipt_number: ''
+    receipt_number: '',
+    enrollment_date: '',
+    last_payment_date: ''
   });
   const [plans, setPlans] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
@@ -177,6 +179,17 @@ export default function RegisterUser() {
       const planPrice = selectedPlan ? selectedPlan.price : 0;
       const pay = Math.max(0, Math.min(parseInt(amountToPay || '0', 10), planPrice));
 
+      const today = new Date();
+      const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      };
+
+      const enrollmentDate = formData.enrollment_date && formData.enrollment_date.trim() !== '' ? formData.enrollment_date : formatDate(today);
+      const lastPaymentDate = formData.last_payment_date && formData.last_payment_date.trim() !== '' ? formData.last_payment_date : formatDate(today);
+
       const fd = new FormData();
       fd.append('name_user', formData.name_user);
       fd.append('phone', formData.phone);
@@ -185,6 +198,8 @@ export default function RegisterUser() {
       fd.append('receipt_number', formData.receipt_number);
       fd.append('id_manager', String(manager?.id_manager ?? ''));
       fd.append('pay', String(pay));
+      fd.append('enrollment_date', enrollmentDate);
+      fd.append('last_payment_date', lastPaymentDate);
       if (faceFile) {
         fd.append('face', faceFile);
       }
@@ -297,7 +312,35 @@ export default function RegisterUser() {
               className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
               required
             />
-          </div> 
+          </div>
+
+          <div>
+            <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='enrollment_date'>
+              Fecha de inscripción
+            </label>
+            <input
+              type='date'
+              id='enrollment_date'
+              name='enrollment_date'
+              value={formData.enrollment_date}
+              onChange={handleInputChange}
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
+            />
+          </div>
+
+          <div>
+            <label className='block font-medium text-gray-700 text-sm mb-2' htmlFor='last_payment_date'>
+              Último pago
+            </label>
+            <input
+              type='date'
+              id='last_payment_date'
+              name='last_payment_date'
+              value={formData.last_payment_date}
+              onChange={handleInputChange}
+              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-100'
+            />
+          </div>
 
           {selectedPlan && (
             <div>
